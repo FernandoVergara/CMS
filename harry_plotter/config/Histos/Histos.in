@@ -1,0 +1,7 @@
+DiTauJetReconstructableMass	m(#tau_{#font[12]{h},1},#tau_{#font[12]{h},2},#font[12]{j}_{1},p^{miss}_{#font[12]{T}})[GeV] 
+DiTauDiJetReconstructableMass	m(#tau_{#font[12]{h},1},#tau_{#font[12]{h},2},#font[12]{j}_{1},#font[12]{j}_{2},p^{miss}_{#font[12]{T}})[GeV] 
+STmet	S_{#font[12]{T}}^{MET}[GeV]
+Tau1Pt          p_{T}(#tau)
+Tau1MetMt	m_{T}(#tau,p_{T}^{miss})[GeV]
+Met	p_{T}^{miss}[GeV]
+DiMuonSumOfPt	p_{#font[12]{T}}(#mu,#mu)[GeV]

@@ -1,0 +1,14 @@
+  git config --global user.name "masegura" 
+  git config --global user.email "manuel.segura@cern.ch"
+  git config --global user.github "maseguracern"
+ 
+  #public key
+ 
+  ssh-keygen -t rsa -b 4096 -C "manuel.segura@cern.ch"
+  eval "$(ssh-agent -s)"
+  ssh-add ~/.ssh/id_rsa
+  
+  #To add the content of .ssh/id_rsa.pub to new keys SSH in profile config in the web page 
+
+  go to https://github.com/cms-sw/cmssw and click on the Fork button
+  - select the option to fork the repository under your username (maseguracern)

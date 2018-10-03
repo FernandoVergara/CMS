@@ -1,0 +1,52 @@
+####################################
+                Run
+####################################
+
+CalculatePUSystematics false
+DataHistos data_75bins_69200.root
+MCHistos MC_75bins.root
+DataPUHistName pileup
+MCPUHistName pileup
+
+TauHistos Tau_Inf.root
+ApplyZBoostSF true
+ApplyTauSF false
+
+isData 1
+ApplyGenWeight false
+
+///------Triggers-----///
+
+///Trigger1FirstRequirement HLT_IsoMu24_v
+///Trigger1SecondRequirement HLT_IsoMu24_v
+
+///Trigger1FirstRequirement HLT_LooseIsoPFTau50_Trk30_eta2p1_MET90
+///Trigger1SecondRequirement HLT_LooseIsoPFTau50_Trk30_eta2p1_MET90
+
+Trigger1FirstRequirement HLT_PFMETNoMu120_PFMHTNoMu120_IDTight
+Trigger1SecondRequirement HLT_PFMETNoMu120_PFMHTNoMu120_IDTight
+
+Trigger2FirstRequirement HLT_Mu8_TrkIsoVVL_DiPFJet40_DEta3p5_MJJ750_HTT300_PFMETNoMu60 
+Trigger2SecondRequirement HLT_Mu8_TrkIsoVVL_DiPFJet40_DEta3p5_MJJ750_HTT300_PFMETNoMu60
+
+///---Treat Muon as Neutrino---///
+
+TreatMuonsAsNeutrinos 0
+TreatMuon1AsTau 0
+///TreatMuon2AsTau 0
+
+///-----MET cuts------///
+
+DiscrByMet true
+MetCut 230. 20000.
+
+DiscrByMHT false
+MhtCut 50.0
+DiscrByHT false
+HtCut 300.0
+
+JetPtForMhtAndHt 30.0        
+JetEtaForMhtAndHt 5.0        
+ApplyJetLooseIDforMhtAndHt false
+
+

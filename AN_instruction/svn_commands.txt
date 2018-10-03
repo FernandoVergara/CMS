@@ -1,0 +1,10 @@
+Setenve
+eval `notes/tdr runtime -sh`
+Compile
+tdr  --draft --style=an b AN-17-142
+
+
+COMMIT
+2. svn update
+3. svn add NameOfFilesYouModified
+4. svn commit -m "Added Tables modified by Felipe"
