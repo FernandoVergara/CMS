@@ -262,11 +262,8 @@ TGraphErrors* plotter::CreateERROR(TH1D *h1, UInt_t Data_bins, Double_t sys_erro
     Double_t Current_error = h1->GetBinError(i);
     new_error = TMath::Sqrt(pow(Current_error,2) + pow(sys_error*Current_error, 2));
     H_Back->SetBinError(i, 0);
-      cout << Current_error << " todos " << new_error << endl;
     if (new_error > Current_error*(1.+sys_error)){
-      cout << " esta pasando " << endl;
       new_error = Current_error*(1.+sys_error);
-      //cout << Current_error << "  " << new_error << endl;
       }
     H_systematic->SetBinError(i, new_error);
   }
@@ -283,12 +280,11 @@ TGraphErrors* plotter::CreateERROR(TH1D *h1, UInt_t Data_bins, Double_t sys_erro
     mcY[i] = H_systematic->GetBinContent(i+1);
     error_i = H_systematic->GetBinError(i+1);
 
-    cout << " Final error " << error_i << endl;
    // if(error_i > (1.+sys_error)) error_i = (1.+sys_error);       
 
 
-    if(i == Data_bins-1) mcErrorY[i] = 0.8*error_i;
-    else mcErrorY[i] = 0.6*error_i;
+    if(i == Data_bins-1) mcErrorY[i] = error_i;
+    else mcErrorY[i] = error_i;
 
     cout << mcErrorY[i] << endl;
     mcX[i] = H_systematic->GetBinCenter(i+1);
@@ -304,6 +300,19 @@ TGraphErrors* plotter::CreateERROR(TH1D *h1, UInt_t Data_bins, Double_t sys_erro
 //McError->SetFillColor(kMagenta+1);
   
   return McError;
+}
+
+
+void plotter::ShowRatioValue(TH1D *h1, UInt_t Data_bins){
+
+ Double_t Content = 0.;
+ Double_t Error = 0.;
+ for (UInt_t i = 1; i <= Data_bins; i++){
+ Content = h1->GetBinContent(i);
+ Error = h1->GetBinError(i);
+ cout << " Content: " << Content << " Error: " << Error << endl; 
+ }
+
 }
 
 plotter::~plotter(){

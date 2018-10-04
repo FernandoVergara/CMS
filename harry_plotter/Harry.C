@@ -4,13 +4,15 @@
 
 void Harry(){
 
-/*
+
 string Path_rootfiles = "Zmumu";
+string folder = "/home/alejandro/Dropbox/CMS/Data";
 string Subfolder = "Zmumu"; 
 string bin_input = "bins_Zmumu";
 string colors_input = "colors_Zmumu";
+//Double_t range[4] = {-1000.,0.01,0.,300000.};
 Double_t range[4] = {0.,0.01,1000.,300000.};
-*/
+
 
 /*
 string Path_rootfiles = "njets1";
@@ -20,13 +22,13 @@ string colors_input = "colors_njets1";
 Double_t range[4] = {200.,0.01,2000.,120.};
 */
 
-
+/*
 string Path_rootfiles = "CRD_MC";
 string Subfolder = "CRD_MC"; 
 string bin_input = "bins";
 string colors_input = "colors_CRD";
 Double_t range[4] = {0.,0.01,500.,150.};
-
+*/
 
 /*
 string Path_rootfiles = "njets2";
@@ -42,7 +44,7 @@ bool dividebinwidth = false;
 LoadFiles *F1 = new LoadFiles();
 F1->Init(Path_rootfiles);
 F1->Show();
-F1->LoadData(Subfolder);
+F1->LoadData(folder, Subfolder);
 
 //Choose the label to obtain the histos (Index)
 cout << " Choose the index for the histogram. " << endl;
@@ -150,7 +152,7 @@ Int_t bins_1 = F1->AllBack->GetXaxis()->GetNbins();
 for(Int_t i = 1; i <= bins_1; i++){
 Double_t error = F1->AllBack->GetBinError(i);
 cout << " before " << error << endl;
-F1->AllBack->SetBinError(i,error*(1.2));
+//F1->AllBack->SetBinError(i,error*(1.2));
 error = F1->AllBack->GetBinError(i);
 cout << " after " << error << endl;
 
@@ -188,10 +190,22 @@ COLOR->pad2->cd();
 
 
 TH1D *Data_Clone = (TH1D*)Data_[0]->Clone();
+Data_Clone->Sumw2();
 TH1D *MC_Clone = (TH1D*)F1->AllBack->Clone();
+MC_Clone->Sumw2();
 Data_Clone->Divide(MC_Clone);
 
-string Ylabel = "#frac{Sum MC BG}{MC}";
+for(UInt_t i = 1; i <= Data_[0]->GetXaxis()->GetNbins();i++){
+Double_t numerator = Data_[0]->GetBinContent(i); 
+Double_t denominator = F1->AllBack->GetBinContent(i); 
+Double_t error_n = Data_[0]->GetBinError(i); 
+Double_t error_d = F1->AllBack->GetBinError(i); 
+
+cout << numerator/denominator << " numerator " << numerator << " denominator " << denominator << " error numerator " << error_n << " error enominator " << error_d  <<  endl;
+}
+
+//string Ylabel = "#frac{Sum MC BG}{MC}";
+string Ylabel = "#frac{Data}{MC}";
 COLOR->SetColorDataClone(&Data_Clone, Xlabel, Ylabel);
 
 
@@ -201,9 +215,13 @@ Data_Clone->Draw("ep");
 COLOR->CreateLine(Data_Clone->GetXaxis()->GetXmin(), Data_Clone->GetXaxis()->GetXmax());  
 
 
+
+
 //Create errors from AllBackground    // the last value is the systematic error 
 TGraphErrors* errorstack = COLOR->CreateERROR(F1->AllBack, Data_[0]->GetXaxis()->GetNbins(), 0.);
 errorstack->Draw("sameE2");
+
+COLOR->ShowRatioValue(Data_Clone, Data_Clone->GetXaxis()->GetNbins());
 
 
 COLOR->pad2->Modified();

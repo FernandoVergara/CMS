@@ -38,7 +38,7 @@ class LoadFiles{
   void Show(); 
   void Fill_Map();
   void Show_Map();
-  void LoadData(string subfolder_);
+  void LoadData(string folder, string subfolder_);
   void CloseData();
   
   

@@ -129,12 +129,12 @@ void LoadFiles::Show(){
   
 }
 
-void LoadFiles::LoadData(string subfolder_){
+void LoadFiles::LoadData(string folder, string subfolder_){
   for(UInt_t i = 0; i < Data_files.size(); i++){
-    Data[i] = TFile::Open(("data/"+ subfolder_ + "/" + Data_files[i]).c_str(),"READ");
+    Data[i] = TFile::Open((folder + "/" + subfolder_ + "/" + Data_files[i]).c_str(),"READ");
   }
   for(UInt_t i = 0; i < MC_files.size(); i++){
-    MC[i] = TFile::Open(("data/"+ subfolder_ + "/" + MC_files[i]).c_str(),"READ");  
+    MC[i] = TFile::Open((folder + "/" + subfolder_ + "/" + MC_files[i]).c_str(),"READ");  
   }
 }
 

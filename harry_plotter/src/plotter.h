@@ -24,6 +24,7 @@ class plotter{
   void CMSLabels();
   void OtherLabels();
   TGraphErrors* CreateERROR(TH1D *h1, UInt_t Data_bins, Double_t sys_error);
+  void ShowRatioValue(TH1D *h1, UInt_t Data_bins);
   
   TCanvas *c;
   TPad *pad1;
