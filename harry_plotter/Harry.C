@@ -8,10 +8,10 @@ void Harry(){
 string Path_rootfiles = "Zmumu";
 string folder = "/home/alejandro/Dropbox/CMS/Data";
 string Subfolder = "Zmumu"; 
-string bin_input = "bins_Zmumu_r";
+string bin_input = "bins_Zmumu";
 string colors_input = "colors_Zmumu";
-Double_t range[4] = {-1000.,0.01,0.,300000.};
-//Double_t range[4] = {0.,0.01,2000.,300000.};
+//Double_t range[4] = {-1000.,0.01,0.,300000.};
+Double_t range[4] = {0.,0.01,2000.,300000.};
 
 
 /*
@@ -88,7 +88,7 @@ bin1->Weight_Init("weights_inverted");
 
 //Calculate total background
 for(UInt_t i = 0 ; i < size_mc ; i++){
-bin1->ApplyWeight(&MC_[i]);
+//bin1->ApplyWeight(&MC_[i]);
 F1->AllBack->Add(MC_[i]);
 }
 
