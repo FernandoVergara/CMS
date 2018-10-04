@@ -32,6 +32,71 @@ void binner::Init(string file){
   
 }
 
+void binner::Weight_Init(string file){
+
+   Input[1].open(("config/Weights/"+file+".in").c_str());
+   if(!Input[1]) {
+    std::cout << "could not open file weights file" <<std::endl;
+    exit(1);
+  } 
+
+  Double_t weights_ = 0;
+  Double_t errors_ = 0;
+
+  while(!Input[1].eof()){
+    Input[1] >> weights_;
+    Input[1] >> errors_;
+    weights.push_back(weights_);    
+    errors.push_back(errors_);    
+
+  }
+  weights.pop_back();
+  errors.pop_back();
+
+ 
+}
+
+
+
+void binner::ApplyWeight(TH1D **h1){
+  
+  
+  Int_t NbinsX =  (*h1)->GetXaxis()->GetNbins();
+  
+ //Fill the maps of weights
+  for(Int_t i = 1; i <= NbinsX; i++){
+  Weight[i] = weights[i-1];
+  Error[i] = errors[i-1]; 
+ // cout <<  i << " " <<Weight[i] <<  " " << Error[i] <<endl;
+ 
+  }
+ 
+  
+  Double_t value=0.;
+  Double_t error=0.;
+  Double_t ratio=0.;
+ 	 for(Int_t i = 1; i <=  NbinsX; i++){
+         if((*h1)->GetBinContent(i) != 0.) 
+		ratio = (*h1)->GetBinError(i)/(*h1)->GetBinContent(i);
+         else ratio = 0.;
+
+         value = Weight[i]*(*h1)->GetBinContent(i);
+	 error = (pow(value,2))*(pow(ratio,2)+pow(Error[i]/Weight[i],2));
+
+       //  error += value; //poissonian error      
+         
+         if(sqrt(error) > value) error = TMath::Power(value,2); 
+  
+         if(error > 0.) cout << i << " new "  << sqrt(error) << " old " << (*h1)->GetBinError(i) <<  " ratio  "<< ratio << " ratio_H " <<  Error[i]/Weight[i] << " entry " << (*h1)->GetBinContent(i) << " value " << value << endl; 
+         
+          (*h1)->SetBinContent(i, value);
+          (*h1)->SetBinError(i, sqrt(error));
+         
+         }
+  
+}
+
+
 
 void binner::Rebinner(TH1D **h_old, UInt_t key){
   

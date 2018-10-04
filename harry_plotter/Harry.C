@@ -8,10 +8,10 @@ void Harry(){
 string Path_rootfiles = "Zmumu";
 string folder = "/home/alejandro/Dropbox/CMS/Data";
 string Subfolder = "Zmumu"; 
-string bin_input = "bins_Zmumu";
+string bin_input = "bins_Zmumu_r";
 string colors_input = "colors_Zmumu";
-//Double_t range[4] = {-1000.,0.01,0.,300000.};
-Double_t range[4] = {0.,0.01,1000.,300000.};
+Double_t range[4] = {-1000.,0.01,0.,300000.};
+//Double_t range[4] = {0.,0.01,2000.,300000.};
 
 
 /*
@@ -66,6 +66,7 @@ for(UInt_t i = 0 ; i < size_mc ; i++) MC_[i] = F1->MC_histos[i];
 
 // Rebinning histograms
 binner *bin1 = new binner(); 
+
 bin1->Init(bin_input);
 F1->Init_AllBack(bin1->N_bins, bin1->BINS); // Initialize Total background 
 
@@ -81,10 +82,18 @@ bin1->Rebinner(&MC_[i], i);
 //Adding all backgrounds
 bin1->Rebinner(&F1->AllBack, 200); // this index does not matter
 
+//bin1->Weight_Init("weights_recoil");
+bin1->Weight_Init("weights_inverted");
+
+
 //Calculate total background
 for(UInt_t i = 0 ; i < size_mc ; i++){
+bin1->ApplyWeight(&MC_[i]);
 F1->AllBack->Add(MC_[i]);
 }
+
+
+
 
 if(dividebinwidth == true){
 
@@ -125,9 +134,15 @@ COLOR->SetColorAllBack(&(F1->AllBack), "", "Events");
 
 //Create Stack for MC
 THStack *Hs = new THStack("Hs", "");
-for(UInt_t i = 0 ; i < size_mc ; i++){
-Hs->Add(MC_[i]);
-}
+//for(UInt_t i = 0 ; i < size_mc ; i++){
+//Hs->Add(MC_[i]);
+//}
+Hs->Add(MC_[4]);
+Hs->Add(MC_[1]);
+Hs->Add(MC_[3]);
+Hs->Add(MC_[2]);
+Hs->Add(MC_[0]);
+
 
 
 //true for log scale
@@ -190,9 +205,7 @@ COLOR->pad2->cd();
 
 
 TH1D *Data_Clone = (TH1D*)Data_[0]->Clone();
-Data_Clone->Sumw2();
 TH1D *MC_Clone = (TH1D*)F1->AllBack->Clone();
-MC_Clone->Sumw2();
 Data_Clone->Divide(MC_Clone);
 
 for(UInt_t i = 1; i <= Data_[0]->GetXaxis()->GetNbins();i++){
@@ -218,7 +231,7 @@ COLOR->CreateLine(Data_Clone->GetXaxis()->GetXmin(), Data_Clone->GetXaxis()->Get
 
 
 //Create errors from AllBackground    // the last value is the systematic error 
-TGraphErrors* errorstack = COLOR->CreateERROR(F1->AllBack, Data_[0]->GetXaxis()->GetNbins(), 0.);
+TGraphErrors* errorstack = COLOR->CreateERROR(F1->AllBack, Data_[0]->GetXaxis()->GetNbins(), 0.1);
 errorstack->Draw("sameE2");
 
 COLOR->ShowRatioValue(Data_Clone, Data_Clone->GetXaxis()->GetNbins());
