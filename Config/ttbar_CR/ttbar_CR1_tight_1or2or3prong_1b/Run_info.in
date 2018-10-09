@@ -2,7 +2,7 @@
                 Run
 ####################################
 
-CalculatePUSystematics false
+CalculatePUSystematics true
 ///DataHistos data_pileup_2016_69p2.root  
 ///MCHistos mc_pileup_Summer16.root
 DataHistos data_75bins_69200.root
@@ -14,8 +14,8 @@ ApplyTauIDSF false
 UsePileUpWeight true
 ApplyZBoostSF true
 
-isData 1
-ApplyGenWeight false
+isData 0
+ApplyGenWeight true
 
 ///------Triggers-----///
 
