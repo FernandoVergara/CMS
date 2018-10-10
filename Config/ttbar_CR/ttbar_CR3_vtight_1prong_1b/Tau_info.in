@@ -93,11 +93,11 @@ DiscrByRejectionIsolation ZERO
 DiscrByProngType true
 ProngType 1hps
 
-DoDiscrAgainstElectron false
+DoDiscrAgainstElectron true
 DiscrAgainstElectron againstElectronMVALooseMVA6
 SelectTausThatAreElectrons 0
 
-DoDiscrAgainstMuon false
+DoDiscrAgainstMuon true
 DiscrAgainstMuon againstMuonTight3
 SelectTausThatAreMuons 0
 

@@ -177,6 +177,8 @@ cout << " after " << error << endl;
 F1->AllBack->Draw("e2same");
 Data_[0]->Draw("e1psame");
 
+gPad->RedrawAxis();
+
 //Legend stuff
 COLOR->CreateLegend();
 //Data
