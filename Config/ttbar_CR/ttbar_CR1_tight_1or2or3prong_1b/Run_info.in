@@ -3,16 +3,16 @@
 ####################################
 
 CalculatePUSystematics true
-///DataHistos data_pileup_2016_69p2.root  
-///MCHistos mc_pileup_Summer16.root
-DataHistos data_75bins_69200.root
-MCHistos MC_75bins.root
+DataHistos data_pileup_2016_69p2.root  
+MCHistos mc_pileup_Summer16.root
+///DataHistos data_75bins_69200.root
+///MCHistos MC_75bins.root
 DataPUHistName pileup
 MCPUHistName pileup
 
 ApplyTauIDSF false
 UsePileUpWeight true
-ApplyZBoostSF true
+ApplyZBoostSF false
 
 isData 0
 ApplyGenWeight true
