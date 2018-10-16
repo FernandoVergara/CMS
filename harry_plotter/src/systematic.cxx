@@ -51,20 +51,29 @@ void systematic::ApplySyst(TH1D **h1){
   Int_t bins = (*h1)->GetXaxis()->GetNbins();
   Double_t content = 0.;
   Double_t error = 0.;
+  Double_t new_error = 0.;
   Double_t Serror = 0.;
+  Double_t Tsyst = 0.;
 
   for(Int_t i = 1; i <= bins; i++){
   Double_t error = (*h1)->GetBinError(i);
   Double_t content = (*h1)->GetBinContent(i);
+  Tsyst = 0.;
 
         Serror = TMath::Power(error,2);
 	for(UInt_t j = 0; j < syst.size(); j++){
         if(Label[j]=="Others") continue;
-        else Serror += TMath::Power(content*Syst[j],2);
+        else{ 
+            Serror += TMath::Power(content*Syst[j],2);
+            Tsyst += TMath::Power(Syst[j],2);
+	    }		
         }
 
-  error = TMath::Sqrt(Serror);
-  (*h1)->SetBinError(i, error); 
+  new_error = TMath::Sqrt(Serror);
+  if (new_error > error*(1.+sqrt(Tsyst)) ) new_error = error*(1.+sqrt(Tsyst));
+
+  cout << " Old " <<  error << " new " << new_error << endl;
+  (*h1)->SetBinError(i, new_error); 
   }
 
 }

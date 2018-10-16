@@ -261,22 +261,23 @@ TGraphErrors* plotter::CreateERROR(TH1D *h1, Double_t Syst[]){
   Double_t error=0.;
   Double_t Serror=0.;
   Double_t new_error = 0.;
-
+  Double_t Tsyst = 0.;
+  
   for (UInt_t i = 1; i <= bins; i++){
-
     H_Back->SetBinError(i, 0.);
-   
+    Tsyst = 0.;
     error = h1->GetBinError(i);
     
     Serror = TMath::Power(error,2);
-    Serror += TMath::Power(error*Syst[3],2);
+    for(UInt_t k = 0; k < 3; k++){
+    Serror += TMath::Power(error*Syst[k],2);
+    Tsyst += TMath::Power(Syst[k],2);
+    } 
     new_error = TMath::Sqrt(Serror);
 
-    if (new_error > error*(1.+Syst[3])){
-      new_error = error*(1.+Syst[3]);
-      }
-  
-    cout << " old  " << h1->GetBinError(i)  << " new error "  << new_error << " Syst "  <<  Syst[3] <<  endl;
+    if (new_error > error*(1.+sqrt(Tsyst)) ) new_error = error*(1.+sqrt(Tsyst));
+    
+    cout << " old  " << error  << " new error "  << new_error <<  endl;
     H_systematic->SetBinError(i, new_error);
 
     
