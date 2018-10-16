@@ -208,15 +208,6 @@ TH1D *Data_Clone = (TH1D*)Data_[0]->Clone();
 TH1D *MC_Clone = (TH1D*)F1->AllBack->Clone();
 Data_Clone->Divide(MC_Clone);
 
-for(UInt_t i = 1; i <= Data_[0]->GetXaxis()->GetNbins();i++){
-Double_t numerator = Data_[0]->GetBinContent(i); 
-Double_t denominator = F1->AllBack->GetBinContent(i); 
-Double_t error_n = Data_[0]->GetBinError(i); 
-Double_t error_d = F1->AllBack->GetBinError(i); 
-
-cout << numerator/denominator << " numerator " << numerator << " denominator " << denominator << " error numerator " << error_n << " error enominator " << error_d  <<  endl;
-}
-
 //string Ylabel = "#frac{Sum MC BG}{MC}";
 string Ylabel = "#frac{Data}{MC}";
 COLOR->SetColorDataClone(&Data_Clone, Xlabel, Ylabel);
@@ -228,10 +219,8 @@ Data_Clone->Draw("ep");
 COLOR->CreateLine(range[0], range[2]);  
 
 
-
-
 //Create errors from AllBackground    // the last value is the systematic error 
-TGraphErrors* errorstack = COLOR->CreateERROR(F1->AllBack, Data_[0]->GetXaxis()->GetNbins(), 0.);
+TGraphErrors* errorstack = COLOR->CreateERROR(F1->AllBack, Syst->Syst);
 errorstack->Draw("sameE2");
 
 COLOR->ShowRatioValue(Data_Clone, Data_Clone->GetXaxis()->GetNbins());

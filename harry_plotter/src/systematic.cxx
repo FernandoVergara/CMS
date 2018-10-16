@@ -59,7 +59,8 @@ void systematic::ApplySyst(TH1D **h1){
 
         Serror = TMath::Power(error,2);
 	for(UInt_t j = 0; j < syst.size(); j++){
-        Serror += TMath::Power(content*Syst[j],2);
+        if(Label[j]=="Others") continue;
+        else Serror += TMath::Power(content*Syst[j],2);
         }
 
   error = TMath::Sqrt(Serror);

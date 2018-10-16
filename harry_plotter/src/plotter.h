@@ -23,7 +23,7 @@ class plotter{
   void LegendDraw();
   void CMSLabels();
   void OtherLabels();
-  TGraphErrors* CreateERROR(TH1D *h1, UInt_t Data_bins, Double_t sys_error);
+  TGraphErrors* CreateERROR(TH1D *h1, Double_t Syst[]);
   void ShowRatioValue(TH1D *h1, UInt_t Data_bins);
   
   TCanvas *c;

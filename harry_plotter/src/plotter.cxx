@@ -250,49 +250,56 @@ void plotter::OtherLabels(){
   tex_3->Draw();
 }
 
-TGraphErrors* plotter::CreateERROR(TH1D *h1, UInt_t Data_bins, Double_t sys_error){
+TGraphErrors* plotter::CreateERROR(TH1D *h1, Double_t Syst[]){
+  
   
   H_Back = (TH1D*)h1->Clone();
   H_systematic = (TH1D*)h1->Clone();
-  H_Back->Sumw2();  
-  H_systematic->Sumw2();  
 
-  Double_t new_error = 0;
-  for (UInt_t i = 1; i < Data_bins; i++){
-    Double_t Current_error = h1->GetBinError(i);
-    new_error = TMath::Sqrt(pow(Current_error,2) + pow(sys_error*Current_error, 2));
-    H_Back->SetBinError(i, 0);
-    if (new_error > Current_error*(1.+sys_error)){
-      new_error = Current_error*(1.+sys_error);
+  UInt_t bins = h1->GetXaxis()->GetNbins();
+
+  Double_t error=0.;
+  Double_t Serror=0.;
+  Double_t new_error = 0.;
+
+  for (UInt_t i = 1; i <= bins; i++){
+
+    H_Back->SetBinError(i, 0.);
+   
+    error = h1->GetBinError(i);
+    
+    Serror = TMath::Power(error,2);
+    Serror += TMath::Power(error*Syst[3],2);
+    new_error = TMath::Sqrt(Serror);
+
+    if (new_error > error*(1.+Syst[3])){
+      new_error = error*(1.+Syst[3]);
       }
+  
+    cout << " old  " << h1->GetBinError(i)  << " new error "  << new_error << " Syst "  <<  Syst[3] <<  endl;
     H_systematic->SetBinError(i, new_error);
+
+    
   }
+
   H_systematic->Divide(H_Back);
   
-  mcX = new Double_t[Data_bins];
-  mcY = new Double_t[Data_bins];
-  mcErrorX = new Double_t[Data_bins];
-  mcErrorY = new Double_t[Data_bins];
+  mcX = new Double_t[bins];
+  mcY = new Double_t[bins];
+  mcErrorX = new Double_t[bins];
+  mcErrorY = new Double_t[bins];
   
   Double_t error_i = 0.;
-  for (UInt_t i = 0; i < Data_bins; i++){
+  for (UInt_t i = 0; i < bins; i++){
     
     mcY[i] = H_systematic->GetBinContent(i+1);
     error_i = H_systematic->GetBinError(i+1);
-
-   // if(error_i > (1.+sys_error)) error_i = (1.+sys_error);       
-
-
-    if(i == Data_bins-1) mcErrorY[i] = error_i;
-    else mcErrorY[i] = error_i;
-
-    cout << mcErrorY[i] << endl;
-    mcX[i] = H_systematic->GetBinCenter(i+1);
-    
+    mcErrorY[i] = error_i;
+    mcX[i] = H_systematic->GetBinCenter(i+1);    
     mcErrorX[i] = H_systematic->GetBinWidth(i+1) * 0.5;
   }
   
-  McError = new TGraphErrors(Data_bins,mcX,mcY,mcErrorX,mcErrorY);
+  McError = new TGraphErrors(bins,mcX,mcY,mcErrorX,mcErrorY);
   McError->SetLineWidth(2);
   McError->SetFillColor(1);
   McError->SetFillStyle(3002);
