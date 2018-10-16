@@ -27,7 +27,7 @@ DeltaPtCutValue 	   50.0   1000.0
                DiMuon
 #####################################
 
-DiscrByDeltaR  1
+DiscrByDeltaR  true
 DeltaRCut      0.3 
 
 DiscrByOSLSType  OS
@@ -39,7 +39,7 @@ CosDphi_DeltaPtMetCut  0.8  1.0
 
 DiscrByMassReco  true
 HowCalculateMassReco NONE     ###VectorSumOfVisProductsAndMet   or    CollinearApprox 
-MassCut          70.0   110.0
+MassCut          80.0   100.0
 
 DiscrByCDFzeta2D          0
 PZetaCutCoefficient       1.0

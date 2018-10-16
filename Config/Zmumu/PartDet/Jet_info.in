@@ -139,7 +139,7 @@ Tau2MatchingDeltaR 0.3
     	     BJet
 ##################################
 
-EtaCut 0.0 2.4
+EtaCut 0.0 2.5
 PtCut 30.0
 DeltaPhi_Met 0.
 
