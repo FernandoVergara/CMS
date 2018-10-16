@@ -16,8 +16,8 @@ ApplyTauIDSF false
 UsePileUpWeight false #for pileup efficiency set to false on a second run 11.08.17
 ApplyZBoostSF false
 
-isData true
-ApplyGenWeight  false
+isData 1
+ApplyGenWeight false
 
 ///------Triggers-----///
 
@@ -26,8 +26,8 @@ Trigger1FirstRequirement HLT_IsoMu24_
 Trigger1SecondRequirement HLT_IsoMu24_ 
 ///HLT_DoubleMediumIsoPFTau35_Trk1_eta2p1
 
-Trigger2FirstRequirement HLT_DoubleMediumIsoPFTau35_Trk1_eta2p1_Reg_v
-Trigger2SecondRequirement HLT_DoubleMediumIsoPFTau40_Trk1_eta2p1_Reg_v
+///Trigger2FirstRequirement HLT_DoubleMediumIsoPFTau35_Trk1_eta2p1_Reg_v
+///Trigger2SecondRequirement HLT_DoubleMediumIsoPFTau40_Trk1_eta2p1_Reg_v
 
 ///---Treat Muon as Neutrino---///
 
@@ -40,7 +40,7 @@ DiscrByMet true
 MetCut 30.0 10000.0
 
 DiscrByMHT false
-MhtCut 50.0
+MhtCut 30.0
 DiscrByHT false
 HtCut 30.0
 

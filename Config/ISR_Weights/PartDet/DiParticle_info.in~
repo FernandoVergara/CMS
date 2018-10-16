@@ -3,17 +3,15 @@
 #######################################
 
 DiscrByDeltaR  true
-DeltaRCut      0.4
+DeltaRCut      0.3
 
-DiscrByOSLSType  LS	#### OS or LS
+DiscrByOSLSType  None	#### OS or LS
 DiscrByCosDphi	 false
-CosDphiCut 	 -1.00   -0.90
+CosDphiCut 	 -1.00   -0.80
 
-
-
-DiscrByMassReco  false
-HowCalculateMassReco  VectorSumOfVisProductsAndMet       ###VectorSumOfVisProductsAndMet   or    CollinearApprox 
-MassCut          100.0   10000.0
+DiscrByMassReco  true
+HowCalculateMassReco  NONE       ###VectorSumOfVisProductsAndMet   or    CollinearApprox 
+MassCut          70.0   110.0
 
 DiscrByCDFzeta2D          false
 PZetaCutCoefficient       1.0
@@ -29,19 +27,19 @@ DeltaPtCutValue 	   50.0   1000.0
                DiMuon
 #####################################
 
-DiscrByDeltaR  0
+DiscrByDeltaR  true
 DeltaRCut      0.3 
 
-DiscrByOSLSType  NONE
+DiscrByOSLSType  OS
 DiscrByCosDphi	 0
 CosDphiCut 	 -1.00   -0.95
 
 DiscrByCosDphi_DeltaPtAndMet   false
 CosDphi_DeltaPtMetCut  0.8  1.0
 
-DiscrByMassReco  0
-HowCalculateMassReco VectorSumOfVisProductsAndMet     ###VectorSumOfVisProductsAndMet   or    CollinearApprox 
-MassCut          150.0   10000.0
+DiscrByMassReco  true
+HowCalculateMassReco NONE     ###VectorSumOfVisProductsAndMet   or    CollinearApprox 
+MassCut          80.0   100.0
 
 DiscrByCDFzeta2D          0
 PZetaCutCoefficient       1.0
@@ -50,18 +48,18 @@ CDFzeta2DCutValue         -50.0    1000
 
 DiscrByDeltaPtDivSumPt     0
 DeltaPtDivSumPtCutValue    0.1  1.0
-DiscrByDeltaPt 		   0
+DiscrByDeltaPt 		   true
 DeltaPtCutValue 	   30.0   9999.0
 
 ########################################
                DiElectron
 #######################################
 
-DiscrByDeltaR  0
+DiscrByDeltaR  1
 DeltaRCut      0.3 
 
-DiscrByOSLSType  NONE
-DiscrByCosDphi	 0
+DiscrByOSLSType  No
+DiscrByCosDphi	 true
 CosDphiCut 	 -1.00   -0.95
 
 DiscrByCosDphi_DeltaPtAndMet   false
@@ -86,17 +84,17 @@ DeltaPtCutValue 	   30.0   1000.0
                DiJet
 #####################################
 
-DiscrByDeltaR 1
+DiscrByDeltaR true
 DeltaRCut 0.3
 
-DiscrByDeltaEta      1
-DeltaEtaCut         3.8  9999.0
+DiscrByDeltaEta      false
+DeltaEtaCut         4.2  9999.0
 DiscrByDeltaPhi      false
 DeltaPhiCut         0    9999.0
-DiscrByOSEta 		1
+DiscrByOSEta true
 DiscrByCosDphi false
 CosDphiCut  -1.00 -0.80
 
-DiscrByMassReco 1
-MassCut 1000.0 9999.0
+DiscrByMassReco false
+MassCut 500.0 9999.0
 
