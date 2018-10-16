@@ -1,17 +1,22 @@
 #include "src/LoadFiles.h"
 #include "src/binner.h"
 #include "src/plotter.h"
+#include "src/systematic.h"
 
 void Harry(){
 
+const TString cmd = "echo $HOME | head -1";
+const TString home = gSystem->GetFromPipe(cmd);
+
+
 
 string Path_rootfiles = "Zmumu";
-string folder = "/home/alejandro/Dropbox/CMS/Data";
-string Subfolder = "Zmumu"; 
+string folder = string(home)+"/Dropbox/CMS/Data/Zmumu";
+string Subfolder = "old_pileup"; 
 string bin_input = "bins_Zmumu";
 string colors_input = "colors_Zmumu";
 //Double_t range[4] = {-1000.,0.01,0.,300000.};
-Double_t range[4] = {0.,0.01,2000.,300000.};
+Double_t range[4] = {0.,0.01,1000.,300000.};
 
 
 /*
@@ -86,13 +91,18 @@ bin1->Rebinner(&F1->AllBack, 200); // this index does not matter
 bin1->Weight_Init("weights_inverted");
 
 
-//Calculate total background
+//Calculate total background, The systematic L=2.5%, Pileup=5%, Closure=5% 
+
+
 for(UInt_t i = 0 ; i < size_mc ; i++){
 //bin1->ApplyWeight(&MC_[i]);
 F1->AllBack->Add(MC_[i]);
 }
 
-
+systematic *Syst = new systematic();
+Syst->Init("Zmumu"); 
+Syst->Show();
+Syst->ApplySyst(&F1->AllBack);
 
 
 if(dividebinwidth == true){
@@ -130,7 +140,8 @@ COLOR->SetColorMC(&MC_[i], i, "", "Events");
 MC_[i]->GetXaxis()->SetRangeUser(range[0],range[2]);
 //MC_[i]->GetYaxis()->SetRangeUser(range[1],range[3]);
 }
-COLOR->SetColorAllBack(&(F1->AllBack), "", "Events");
+F1->AllBack->GetXaxis()->SetRangeUser(range[0],range[2]);
+COLOR->SetColorAllBack(&F1->AllBack, "", "Events");
 
 //Create Stack for MC
 THStack *Hs = new THStack("Hs", "");
@@ -160,19 +171,6 @@ else Hs->GetYaxis()->SetTitle("Events/GeV");
 
 Hs->GetYaxis()->SetTitleSize(0.05);
 Hs->GetYaxis()->SetTitleOffset(0.90);
-
-
-Int_t bins_1 = F1->AllBack->GetXaxis()->GetNbins();
-
-for(Int_t i = 1; i <= bins_1; i++){
-Double_t error = F1->AllBack->GetBinError(i);
-cout << " before " << error << endl;
-//F1->AllBack->SetBinError(i,error*(1.2));
-error = F1->AllBack->GetBinError(i);
-cout << " after " << error << endl;
-
-}
-
 
 F1->AllBack->Draw("e2same");
 Data_[0]->Draw("e1psame");
@@ -227,13 +225,13 @@ COLOR->SetColorDataClone(&Data_Clone, Xlabel, Ylabel);
 Data_Clone->GetXaxis()->SetRangeUser(range[0],range[2]);
 Data_Clone->GetYaxis()->SetRangeUser(0.5,2.);
 Data_Clone->Draw("ep");
-COLOR->CreateLine(Data_Clone->GetXaxis()->GetXmin(), Data_Clone->GetXaxis()->GetXmax());  
+COLOR->CreateLine(range[0], range[2]);  
 
 
 
 
 //Create errors from AllBackground    // the last value is the systematic error 
-TGraphErrors* errorstack = COLOR->CreateERROR(F1->AllBack, Data_[0]->GetXaxis()->GetNbins(), 0.1);
+TGraphErrors* errorstack = COLOR->CreateERROR(F1->AllBack, Data_[0]->GetXaxis()->GetNbins(), 0.);
 errorstack->Draw("sameE2");
 
 COLOR->ShowRatioValue(Data_Clone, Data_Clone->GetXaxis()->GetNbins());
