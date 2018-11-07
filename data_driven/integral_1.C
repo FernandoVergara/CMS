@@ -19,8 +19,8 @@ void fill(){
 //input.push_back("CR2/QCD");
 //input.push_back("Final/CR2/QCD");
 
-input.push_back("W_tight/met_30/W+Jets");
-input.push_back("W_loose/met_30/W+Jets");
+input.push_back("data/Z_tight/DY+Jets");
+input.push_back("data/Z_loose/DY+Jets");
 
 //input.push_back("Z_tight/met_30/DY+Jets");
 //input.push_back("Z_loose/met_30/DY+Jets");
@@ -83,7 +83,8 @@ TGraphErrors* CreateERROR(TH1D *h1, TH1D *h2, Double_t weight){
     if(H1->GetBinContent(i+1) == 0.) continue;
    
     mcY[i] = H1->GetBinContent(i+1)*weight;
-    cout << H1->GetBinContent(i+1) << endl;
+    if(mcY[i] < 0.) mcY[i] = 0.29;    
+
     mcErrorY[i] = H1->GetBinError(i+1);
     mcX[i] = H2->GetBinCenter(i+1);
     mcErrorX[i] = H2->GetBinWidth(i+1) * 0.5;

@@ -30,19 +30,27 @@ vector<string> Histo;
 TFile *TData[10] ;
 TFile *TBack[10] ;
 
+string folder;
+
 void fill_info(){
   //for data
-  Data_dir.push_back("Z_tight/new");
+  const TString cmd = "echo $HOME | head -1";
+  const TString home = gSystem->GetFromPipe(cmd);
+  folder = string(home)+"/Dropbox/CMS/Data/data_driven/";
+  folder += "Z_tight";
+  //folder += "Z_loose";
+
+  Data_dir.push_back(folder);
  
   Data.push_back("allData");
  
   //for background
-  Back_dir.push_back("Z_tight/new");
+  Back_dir.push_back(folder);
  
  Back.push_back("DY+Jets");
   
   Back.push_back("W+Jets");
-  Back.push_back("QCD");  
+ // Back.push_back("QCD");  
   
   Back.push_back("SingleTop");
   Back.push_back("tt");
@@ -241,10 +249,10 @@ void  data_driven(){
          // cout << " New " << Data_histo[i]->GetBinContent(kk) << " Error " << Data_histo[i]->GetBinError(kk) << endl;
           } 
 
-          if(bin_value < 0.) { 
-		Data_histo[i]->SetBinContent(kk, 0.);
-                Data_histo[i]->SetBinError(kk, 0.);
-                             }
+        //  if(bin_value < 0.) { 
+	//	Data_histo[i]->SetBinContent(kk, 0.);
+          //      Data_histo[i]->SetBinError(kk, 0.);
+//                             }
 
          
           //Deleting negative entries
