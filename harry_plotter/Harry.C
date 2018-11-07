@@ -12,11 +12,11 @@ const TString home = gSystem->GetFromPipe(cmd);
 
 string Path_rootfiles = "Zmumu";
 string folder = string(home)+"/Dropbox/CMS/Data/Zmumu";
-string Subfolder = "old_pileup"; 
-string bin_input = "bins_Zmumu";
+string Subfolder = "new_pileup"; 
+string bin_input = "bins_Zmumu_r";
 string colors_input = "colors_Zmumu";
-//Double_t range[4] = {-1000.,0.01,0.,300000.};
-Double_t range[4] = {0.,0.01,1000.,300000.};
+Double_t range[4] = {-1000.,0.01,0.,300000.};
+//Double_t range[4] = {0.,0.01,1000.,300000.};
 
 
 /*
@@ -95,7 +95,7 @@ bin1->Weight_Init("weights_inverted");
 
 
 for(UInt_t i = 0 ; i < size_mc ; i++){
-//bin1->ApplyWeight(&MC_[i]);
+bin1->ApplyWeight(&MC_[i]);
 F1->AllBack->Add(MC_[i]);
 }
 
