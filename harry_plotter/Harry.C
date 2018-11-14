@@ -9,14 +9,21 @@ const TString cmd = "echo $HOME | head -1";
 const TString home = gSystem->GetFromPipe(cmd);
 
 
-
+/*
 string Path_rootfiles = "Zmumu";
 string folder = string(home)+"/Dropbox/CMS/Data/Zmumu";
 string Subfolder = "new_pileup"; 
-string bin_input = "bins_Zmumu_r";
+*/
+
+string Path_rootfiles = "Zmumu";
+string folder = string(home)+"/Descargas";
+string Subfolder = "Zmumu2017"; 
+
+
+string bin_input = "bins_Zmumu";
 string colors_input = "colors_Zmumu";
-Double_t range[4] = {-1000.,0.01,0.,300000.};
-//Double_t range[4] = {0.,0.01,1000.,300000.};
+//Double_t range[4] = {-1000.,0.01,0.,300000.};
+Double_t range[4] = {0.,0.01,1000.,10000000.};
 
 
 /*
@@ -95,14 +102,14 @@ bin1->Weight_Init("weights_inverted");
 
 
 for(UInt_t i = 0 ; i < size_mc ; i++){
-bin1->ApplyWeight(&MC_[i]);
+//bin1->ApplyWeight(&MC_[i]);
 F1->AllBack->Add(MC_[i]);
 }
 
 systematic *Syst = new systematic();
 Syst->Init("Zmumu"); 
 Syst->Show();
-Syst->ApplySyst(&F1->AllBack);
+//Syst->ApplySyst(&F1->AllBack);
 
 
 if(dividebinwidth == true){
