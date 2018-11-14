@@ -150,8 +150,8 @@ EtaCut 0.0 2.5
 PtCut 30.0
 DeltaPhi_Met 0.
 
-RemoveOverlapWithMuon1s 1
-RemoveOverlapWithMuon2s 1
+RemoveOverlapWithMuon1s 0
+RemoveOverlapWithMuon2s 0
 Muon1MatchingDeltaR 0.3
 Muon2MatchingDeltaR 0.3
 

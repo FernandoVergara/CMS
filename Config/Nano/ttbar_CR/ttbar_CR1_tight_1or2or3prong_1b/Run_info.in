@@ -2,18 +2,19 @@
                 Run
 ####################################
 
-CalculatePUSystematics true
-UsePileUpWeight  true
+CalculatePUSystematics false
+UsePileUpWeight false
 DataHistos data_75bins_69200.root
 MCHistos MC_75bins.root
 DataPUHistName pileup
 MCPUHistName pileup
 
 isData false
-ApplyGenWeight  true
+ApplyGenWeight false
+
 ApplyTauIDSF false
-ApplyZBoostSF true
-ApplyWKfactor true
+ApplyZBoostSF false
+ApplyWKfactor false
 
 
 ///------Triggers-----///
