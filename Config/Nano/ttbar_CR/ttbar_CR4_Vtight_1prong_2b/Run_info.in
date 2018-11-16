@@ -2,15 +2,15 @@
                 Run
 ####################################
 
-CalculatePUSystematics false
-UsePileUpWeight false
+CalculatePUSystematics true
+UsePileUpWeight true
 DataHistos data_75bins_69200.root
 MCHistos MC_75bins.root
 DataPUHistName pileup
 MCPUHistName pileup
 
 isData false
-ApplyGenWeight false
+ApplyGenWeight true
 
 ApplyTauIDSF false
 ApplyZBoostSF false
