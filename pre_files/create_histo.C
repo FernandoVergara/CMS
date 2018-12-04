@@ -1,3 +1,5 @@
+#include <fstream>
+
 void create_histo(){
   
   std::ifstream Input[2];
@@ -23,7 +25,12 @@ void create_histo(){
     output.push_back(input_);
   }
   output.pop_back();
-  
+
+
+  ofstream out_;
+  out_.open("salida.txt", ios::in);
+
+ 
   
   for(UInt_t i=0;i<input.size();i++){
     //	std::cout << input[i] << " " << output[i] << " " << std::endl;
@@ -43,6 +50,8 @@ void create_histo(){
   
   TFile *Data[30];
   TFile *Out[30];
+
+ 
   
   for(UInt_t i = 0; i < input.size(); i++){
     Data[i] = TFile::Open((input[i]).c_str(),"READ");
@@ -52,7 +61,8 @@ void create_histo(){
   }
   
   TH1D *Histo[30];
-  
+ 
+ 
   for(UInt_t ii = 0; ii < Cuts.size(); ii++){
     
     for(UInt_t i = 0; i < output.size(); i++){
@@ -73,15 +83,21 @@ void create_histo(){
 	Out[j]->cd(Cuts[ii].c_str());
         Histo[j]->Write();
 	gDirectory->pwd();
-	std::cout << Cuts[ii] << " " << Histo[j]->GetName() << std::endl;
+	std::cout << Cuts[ii] << " " << Histo[j]->GetName() << " Integral: " << Histo[j]->Integral() << std::endl;
+  
+      if (out_.is_open()) { 
+           out_ << output[j] << " " << Cuts[ii] << " " << Histo[j]->GetName() <<" " << Histo[j]->Integral() << endl; 
+          }
+       else {cout << "No open " << endl; exit(0);}
       }
       
       
     }
   }
   
-  
-  
+
+
+  //out->close();  
   for(UInt_t i = 0; i < output.size(); i++) Out[i]->Close();
   
   
