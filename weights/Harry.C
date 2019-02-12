@@ -2,17 +2,18 @@
 #include "src/binner.h"
 
 void Harry(){
-/*
+
 string Path_rootfiles = "CRC";
 string Subfolder = "CRC"; 
 string bin_input = "bins";
 //sring bin_input = "bins_1";
-*/
 
+
+/*
 string Path_rootfiles = "CRB";
 string Subfolder = "CRB"; 
 string bin_input = "bins";
-
+*/
 
 bool dividebinwidth = false;
 
@@ -69,7 +70,7 @@ F1->SubstractBack2(&F1->Data_histos2[i],0);
 
 
 for(UInt_t i = 0 ; i < size_data ; i++){
-bin1->ApplyWeight(&F1->Data_histos2[i]);
+bin2->ApplyWeight(&F1->Data_histos2[i]);
 }
 
 Double_t Total_E = 0.;
