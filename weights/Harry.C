@@ -2,17 +2,17 @@
 #include "src/binner.h"
 
 void Harry(){
-/*
+
 string Path_rootfiles = "CRC";
 string Subfolder = "CRC"; 
 string bin_input = "bins";
 //sring bin_input = "bins_1";
-*/
 
+/*
 string Path_rootfiles = "CRB";
 string Subfolder = "CRB"; 
 string bin_input = "bins";
-
+*/
 
 bool dividebinwidth = false;
 

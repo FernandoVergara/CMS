@@ -118,6 +118,7 @@ void plotter::SetColorDataClone(TH1D **h1, string x_label, string y_label){
 
 void plotter::SetColorMC(TH1D **h1, UInt_t index, string x_label, string y_label){
   Double_t Color = GetColor(colors[index], sign[index], number[index]); 
+  std::cout << Color << std::endl;
   (*h1)->SetFillColor(Color);
   (*h1)->SetLineColor(Color);
   (*h1)->GetXaxis()->SetTitle(x_label.c_str());
