@@ -228,7 +228,9 @@ void plotter::CMSLabels(){
   pt2->Draw();
   
   pt3 = new TPaveText(0.117801,0.7944969,0.2382199,0.8561478,"NBNDC");
-  pt3->AddText("Preliminary");
+ // pt3->AddText("Preliminary");
+  pt3->AddText("Work in progress");
+  pt3->SetTextSize(0.05);
   pt3->SetTextAlign(12);
   pt3->SetTextFont(52);
   pt3->SetFillStyle(0);

@@ -8,6 +8,10 @@ string Subfolder = "CRC";
 string bin_input = "bins";
 //sring bin_input = "bins_1";
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 496deae5b4bbe4f87a2c2bcdaae4e521f20bb6ca
 /*
 string Path_rootfiles = "CRB";
 string Subfolder = "CRB"; 
@@ -69,7 +73,7 @@ F1->SubstractBack2(&F1->Data_histos2[i],0);
 
 
 for(UInt_t i = 0 ; i < size_data ; i++){
-bin1->ApplyWeight(&F1->Data_histos2[i]);
+bin2->ApplyWeight(&F1->Data_histos2[i]);
 }
 
 Double_t Total_E = 0.;

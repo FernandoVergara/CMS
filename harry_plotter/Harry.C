@@ -14,6 +14,7 @@ string Path_rootfiles = "Zmumu";
 string folder = string(home)+"/Dropbox/CMS/Data/Zmumu";
 string Subfolder = "new_pileup"; 
 */
+<<<<<<< HEAD
 
 string Path_rootfiles = "CRD";
 string folder = string(home)+"/Dropbox/CMS/Data/CRD";
@@ -25,6 +26,19 @@ string colors_input = "colors_CRD";
 //Double_t range[4] = {-1000.,0.01,0.,300000.};
 Double_t range[4] = {0.,0.01,500.,200.};
 
+=======
+/*
+string Path_rootfiles = "Zmumu";
+string folder = string(home)+"/Descargas";
+string Subfolder = "Zmumu2017"; 
+*/
+/*
+string bin_input = "bins_Zmumu_r";
+string colors_input = "colors_Zmumu";
+Double_t range[4] = {-1000.,0.01,0.,300000.};
+//Double_t range[4] = {0.,0.01,1000.,10000000.};
+*/
+>>>>>>> 496deae5b4bbe4f87a2c2bcdaae4e521f20bb6ca
 
 /*
 string Path_rootfiles = "njets1";
@@ -34,13 +48,14 @@ string colors_input = "colors_njets1";
 Double_t range[4] = {200.,0.01,2000.,120.};
 */
 
-/*
+
 string Path_rootfiles = "CRD_MC";
-string Subfolder = "CRD_MC"; 
+string folder = string(home)+"/Dropbox/CMS/Data/CRCMC";
+string Subfolder = "MC"; 
 string bin_input = "bins";
 string colors_input = "colors_CRD";
 Double_t range[4] = {0.,0.01,500.,150.};
-*/
+
 
 /*
 string Path_rootfiles = "njets2";
@@ -109,7 +124,7 @@ F1->AllBack->Add(MC_[i]);
 systematic *Syst = new systematic();
 Syst->Init("Zmumu"); 
 Syst->Show();
-//Syst->ApplySyst(&F1->AllBack);
+Syst->ApplySyst(&F1->AllBack);
 
 
 if(dividebinwidth == true){
@@ -155,6 +170,10 @@ THStack *Hs = new THStack("Hs", "");
 for(UInt_t i = 0 ; i < size_mc ; i++){
 Hs->Add(MC_[i]);
 }
+<<<<<<< HEAD
+=======
+
+>>>>>>> 496deae5b4bbe4f87a2c2bcdaae4e521f20bb6ca
 /*
 Hs->Add(MC_[4]);
 Hs->Add(MC_[1]);
