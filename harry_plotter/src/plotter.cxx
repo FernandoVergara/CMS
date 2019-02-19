@@ -37,6 +37,8 @@ Double_t plotter::GetColor(string color, string sign, Double_t number){
   map_color["kGreen"] = 416;
   map_color["kOrange"] = 800;
   map_color["kYellow"] = 400;
+  map_color["kGray"] = 920;
+  map_color["kBasic"] = 0;
   
   Double_t Color = map_color[color];
   if(sign=="+") Color += number;

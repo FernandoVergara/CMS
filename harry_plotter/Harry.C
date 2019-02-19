@@ -48,13 +48,20 @@ string colors_input = "colors_njets1";
 Double_t range[4] = {200.,0.01,2000.,120.};
 */
 
-
+/*
 string Path_rootfiles = "CRD_MC";
 string folder = string(home)+"/Dropbox/CMS/Data/CRCMC";
 string Subfolder = "MC"; 
 string bin_input = "bins";
 string colors_input = "colors_CRD";
 Double_t range[4] = {0.,0.01,500.,150.};
+*/
+string Path_rootfiles = "Emulation";
+string folder = string(home)+"/Dropbox/CMS/Data/Emulation";
+string Subfolder = ""; 
+string bin_input = "bins";
+string colors_input = "colors_Emulation";
+Double_t range[4] = {0.,0.01,500.,100000.};
 
 
 /*
@@ -155,7 +162,7 @@ COLOR->Init(colors_input);
 for(UInt_t i = 0 ; i < size_data ; i++){
 COLOR->SetColorData(&Data_[i], "", "Events");
 Data_[i]->GetXaxis()->SetRangeUser(range[0],range[2]);
-//Data_[i]->GetYaxis()->SetRangeUser(range[1],range[3]);
+Data_[i]->GetYaxis()->SetRangeUser(range[1],range[3]);
 }
 for(UInt_t i = 0 ; i < size_mc ; i++){
 COLOR->SetColorMC(&MC_[i], i, "", "Events");
