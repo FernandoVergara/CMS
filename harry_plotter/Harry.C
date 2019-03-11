@@ -59,7 +59,7 @@ Double_t range[4] = {200.,0.01,2000.,120.};
 */
 
 //Do plot by bin width
-bool dividebinwidth = false;
+bool dividebinwidth = true;
 
 LoadFiles *F1 = new LoadFiles();
 F1->Init(Path_rootfiles);
@@ -103,14 +103,17 @@ bin1->Rebinner(&MC_[i], i);
 bin1->Rebinner(&F1->AllBack, 200); // this index does not matter
 
 //bin1->Weight_Init("weights_recoil");
-bin1->Weight_Init("weights_inverted");
+bin1->Weight_Init("weights_emulation");
 
 
 //Calculate total background, The systematic L=2.5%, Pileup=5%, Closure=5% 
+for(UInt_t i = 0 ; i < size_data ; i++){
+//bin1->ApplyWeight(&Data_[i]);
+}
 
 
 for(UInt_t i = 0 ; i < size_mc ; i++){
-//bin1->ApplyWeight(&MC_[i]);
+bin1->ApplyWeight(&MC_[i]);
 F1->AllBack->Add(MC_[i]);
 }
 
@@ -174,7 +177,7 @@ Hs->Add(MC_[0]);
 
 
 //true for log scale
-COLOR->Create_Canvas(false,false);
+COLOR->Create_Canvas(true,false);
 COLOR->c->cd();
 
 // Pad1 --------------------------
@@ -231,7 +234,7 @@ COLOR->SetColorDataClone(&Data_Clone, Xlabel, Ylabel);
 
 
 Data_Clone->GetXaxis()->SetRangeUser(range[0],range[2]);
-Data_Clone->GetYaxis()->SetRangeUser(0.5,2.);
+Data_Clone->GetYaxis()->SetRangeUser(0.,2.);
 Data_Clone->Draw("ep");
 COLOR->CreateLine(range[0], range[2]);  
 

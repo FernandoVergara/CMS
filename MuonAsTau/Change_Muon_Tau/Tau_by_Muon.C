@@ -34,9 +34,9 @@ void fill(){
   //  Data_dir.push_back("EW+Jets");
  // Data_dir.push_back("W+Jets");
 //  Data_dir.push_back("SingleMuon_ETau");
-  Data_dir.push_back("Met_Etau");
+  Data_dir.push_back(".");
   
-  input.push_back("allData");
+  input.push_back("Emu_W+Jets");
  // input.push_back("W+Jets");
 /*
   input.push_back("WJetsToLNu_HT-0To70");
@@ -111,6 +111,14 @@ void  Tau_by_Muon(){
   	TH1F *Tau = (TH1F*)f1->Get((folder[tau_index]+"/"+Histo1[l]).c_str());
         TH1F *Muon = (TH1F*)f1->Get((folder[muon_index]+"/"+Histo2[l]).c_str());
  	Tau->Add(Tau, Muon, 1, +1);
+        //Muon->Add(Muon, Tau, 1, +1);
+        Double_t expected=3676.0-108.95548-63.9240-177.16365;
+        Double_t integral=Tau->Integral();
+               cout << expected << "  " << integral << endl;
+        if(integral != 0){ Tau->Scale(expected/integral);
+         // Muon->Scale(expected/integral);
+        }
+        else cout << "Normalization no available" << endl;
   	//Muon->Add(Muon, Tau, 1, +1);
         cout << folder[tau_index]+"/"+Histo1[l] << endl;
         cout << folder[muon_index]+"/"+Histo2[l] << endl;

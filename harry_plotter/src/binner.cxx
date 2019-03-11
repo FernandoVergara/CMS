@@ -67,7 +67,7 @@ void binner::ApplyWeight(TH1D **h1){
   for(Int_t i = 1; i <= NbinsX; i++){
   Weight[i] = weights[i-1];
   Error[i] = errors[i-1]; 
- // cout <<  i << " " <<Weight[i] <<  " " << Error[i] <<endl;
+  cout <<  i << " " <<Weight[i] <<  " " << Error[i] <<endl;
  
   }
  
