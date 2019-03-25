@@ -14,19 +14,6 @@ string Path_rootfiles = "Zmumu";
 string folder = string(home)+"/Dropbox/CMS/Data/Zmumu";
 string Subfolder = "new_pileup"; 
 */
-<<<<<<< HEAD
-
-string Path_rootfiles = "CRD";
-string folder = string(home)+"/Dropbox/CMS/Data/CRD";
-string Subfolder = "/"; 
-
-
-string bin_input = "bins";
-string colors_input = "colors_CRD";
-//Double_t range[4] = {-1000.,0.01,0.,300000.};
-Double_t range[4] = {0.,0.01,500.,200.};
-
-=======
 /*
 string Path_rootfiles = "Zmumu";
 string folder = string(home)+"/Descargas";
@@ -38,7 +25,6 @@ string colors_input = "colors_Zmumu";
 Double_t range[4] = {-1000.,0.01,0.,300000.};
 //Double_t range[4] = {0.,0.01,1000.,10000000.};
 */
->>>>>>> 496deae5b4bbe4f87a2c2bcdaae4e521f20bb6ca
 
 /*
 string Path_rootfiles = "njets1";
@@ -57,7 +43,7 @@ string colors_input = "colors_CRD";
 Double_t range[4] = {0.,0.01,500.,150.};
 */
 string Path_rootfiles = "Emulation";
-string folder = string(home)+"/Dropbox/CMS/Data/Emulation";
+string folder = string(home)+"/Libros/CMS_Data/Emulation";
 string Subfolder = ""; 
 string bin_input = "bins";
 string colors_input = "colors_Emulation";
@@ -73,7 +59,7 @@ Double_t range[4] = {200.,0.01,2000.,120.};
 */
 
 //Do plot by bin width
-bool dividebinwidth = false;
+bool dividebinwidth = true;
 
 LoadFiles *F1 = new LoadFiles();
 F1->Init(Path_rootfiles);
@@ -117,14 +103,17 @@ bin1->Rebinner(&MC_[i], i);
 bin1->Rebinner(&F1->AllBack, 200); // this index does not matter
 
 //bin1->Weight_Init("weights_recoil");
-bin1->Weight_Init("weights_inverted");
+bin1->Weight_Init("weights_emulation");
 
 
 //Calculate total background, The systematic L=2.5%, Pileup=5%, Closure=5% 
+for(UInt_t i = 0 ; i < size_data ; i++){
+//bin1->ApplyWeight(&Data_[i]);
+}
 
 
 for(UInt_t i = 0 ; i < size_mc ; i++){
-//bin1->ApplyWeight(&MC_[i]);
+bin1->ApplyWeight(&MC_[i]);
 F1->AllBack->Add(MC_[i]);
 }
 
@@ -177,10 +166,7 @@ THStack *Hs = new THStack("Hs", "");
 for(UInt_t i = 0 ; i < size_mc ; i++){
 Hs->Add(MC_[i]);
 }
-<<<<<<< HEAD
-=======
 
->>>>>>> 496deae5b4bbe4f87a2c2bcdaae4e521f20bb6ca
 /*
 Hs->Add(MC_[4]);
 Hs->Add(MC_[1]);
@@ -191,7 +177,7 @@ Hs->Add(MC_[0]);
 
 
 //true for log scale
-COLOR->Create_Canvas(false,false);
+COLOR->Create_Canvas(true,false);
 COLOR->c->cd();
 
 // Pad1 --------------------------
@@ -248,7 +234,7 @@ COLOR->SetColorDataClone(&Data_Clone, Xlabel, Ylabel);
 
 
 Data_Clone->GetXaxis()->SetRangeUser(range[0],range[2]);
-Data_Clone->GetYaxis()->SetRangeUser(0.5,2.);
+Data_Clone->GetYaxis()->SetRangeUser(0.,2.);
 Data_Clone->Draw("ep");
 COLOR->CreateLine(range[0], range[2]);  
 
