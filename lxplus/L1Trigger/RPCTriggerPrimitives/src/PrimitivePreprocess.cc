@@ -4,13 +4,17 @@ PrimitivePreprocess::PrimitivePreprocess(const edm::ParameterSet& iConfig, edm::
   rpcToken_(iConsumes.consumes<RPCDigiCollection>(iConfig.getParameter<edm::InputTag>("Primitiverechitlabel"))),
   processorvector_(),
   Mapsource_(iConfig.getParameter<std::string>("Mapsource")),
-  ClusterSizeCut_(iConfig.getParameter<std::vector<int>>("ClusterSizeCut")),
   LinkBoardCut_(iConfig.getParameter<std::vector<int>>("LinkBoardCut")),
-  maskSource_(MaskSource::EventSetup), 
-  deadSource_(MaskSource::EventSetup),
+  ClusterSizeCut_(iConfig.getParameter<std::vector<int>>("ClusterSizeCut")),
   theRPCMaskedStripsObj(nullptr),
   theRPCDeadStripsObj(nullptr),
-  theAlgo(RPCRecHitAlgoFactory::get()->create(iConfig.getParameter<std::string>("recAlgo"),iConfig.getParameter<edm::ParameterSet>("recAlgoConfig"))){
+  maskSource_(MaskSource::EventSetup), 
+  deadSource_(MaskSource::EventSetup){
+
+ // Get the concrete reconstruction algo from the factory
+   const std::string theAlgoName = iConfig.getParameter<std::string>("recAlgo");
+   theAlgorithm.reset(PrimitiveAlgoFactory::get()->create(theAlgoName,
+                      iConfig.getParameter<edm::ParameterSet>("recAlgoConfig")));
 
 
   //Get LUT for linkboard map
@@ -123,10 +127,32 @@ void PrimitivePreprocess::beginRun(const edm::EventSetup& iSetup){
 } 
     
 void PrimitivePreprocess::Preprocess(const edm::Event& iEvent, const edm::EventSetup& iSetup, RPCRecHitCollection& primitivedigi){
-  //loop over rpcdigis and cluster algorithm
+    //loop over rpcdigis and cluster algorithm
+     
+
+     std::map<std::string, std::string> LBName_ChamberID_Map_1;
+     std::map<std::string, std::string> LBID_ChamberID_Map_1;
+     std::map<std::string, std::string> LBName_ChamberID_Map_2;
+     std::map<std::string, std::string> LBID_ChamberID_Map_2;
+  
+     std::vector<RPCProcessor::Map_structure>::iterator it;
+     for(it = Final_MapVector.begin(); it != Final_MapVector.end(); it++){
+         LBName_ChamberID_Map_1[(*it).chamber1_]=(*it).linkboard_;
+         LBID_ChamberID_Map_1[(*it).chamber1_]=(*it).linkboard_ID;
+         if((*it).chamber2_ != "-"){
+         LBName_ChamberID_Map_2[(*it).chamber2_]=(*it).linkboard_;
+         LBID_ChamberID_Map_2[(*it).chamber2_]=(*it).linkboard_ID;
+         }
+     }
+          // map_2 is only necessary for barrel
+
+
 
   for(auto& iterator_ : processorvector_){
-    iterator_.Process(iEvent, iSetup, rpcToken_, primitivedigi, theRPCMaskedStripsObj, theRPCDeadStripsObj, theAlgo);
+    iterator_.Process(iEvent, iSetup, rpcToken_, primitivedigi, 
+	theRPCMaskedStripsObj, theRPCDeadStripsObj, theAlgorithm, 
+        LBName_ChamberID_Map_1, LBID_ChamberID_Map_1, LBName_ChamberID_Map_2, LBID_ChamberID_Map_2, 
+        LinkBoardCut_, ClusterSizeCut_);
   }
 }
 

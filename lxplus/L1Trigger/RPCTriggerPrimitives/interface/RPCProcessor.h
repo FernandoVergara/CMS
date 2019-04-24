@@ -28,10 +28,12 @@
 
 #include <algorithm>
 #include <iostream>
+#include <fstream>
 #include <map>
 #include <memory>
 #include <string> 
 #include <sstream>
+#include <utility>
 #include <vector>
 #include <boost/cstdint.hpp>
 
@@ -42,25 +44,37 @@ class RPCProcessor{
   explicit RPCProcessor();
   ~RPCProcessor();
   
+   struct Map_structure {
+
+     std::string linkboard_;
+     std::string linkboard_ID;
+     std::string chamber1_;
+     std::string chamber2_;
+     COND_SERIALIZABLE;     	
+   };
+
   void Process(const edm::Event& iEvent,
 	       const edm::EventSetup& iSetup,
 	       const edm::EDGetToken& RPCDigiToken,
 	       RPCRecHitCollection& primitivedigi,
                std::unique_ptr<RPCMaskedStrips>& theRPCMaskedStripsObj,
 	       std::unique_ptr<RPCDeadStrips>& theRPCDeadStripsObj,
-	       std::unique_ptr<RPCRecHitBaseAlgo>& theAlgo) const;
- 
-   struct Map_structure {
+	       std::unique_ptr<RPCRecHitBaseAlgo>& theAlgo,
+               std::map<std::string, std::string> LBName_ChamberID_Map_1, 
+               std::map<std::string, std::string> LBID_ChamberID_Map_1, 
+               std::map<std::string, std::string> LBName_ChamberID_Map_2, 
+	       std::map<std::string, std::string> LBID_ChamberID_Map_2,
+	       std::vector<int>& LinkboardCut, 
+               std::vector<int>& ClusterSizeCut ) const;
 
-     std::string linkboard_;
-     int linkboard_ID;
-     std::string chamber1_;
-     std::string chamber2_;
-     COND_SERIALIZABLE;     	
-   };
+  static edm::OwnVector<RPCRecHit> ApplyClusterSizeCut(const edm::OwnVector<RPCRecHit> recHits_, std::vector<int> ClusterSizeCut_);
+  static bool ApplyLinkBoardCut(int NClusters, std::vector<int> LinkboardCut);
 
   std::vector<Map_structure> const & GetMapVector() const {return MapVec;}
   std::vector<Map_structure> MapVec;
+
+  std::string GetStringBarrel(const int ring_, const int station_, const int sector_, const int layer_, const int subsector_, const int roll_) const;
+  std::string GetStringEndCap(const int station_, const int ring_, const int chamberID_) const;
 
  
   COND_SERIALIZABLE;
@@ -68,9 +82,8 @@ class RPCProcessor{
  private:
   
   std::shared_ptr<RPCRecHit> digi_pointer;
-  
-  // The reconstruction algorithm
-  std::unique_ptr<RPCRecHitBaseAlgo> theAlgo; 
+
+
 };
 #endif
 

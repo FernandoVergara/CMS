@@ -34,7 +34,7 @@ from L1Trigger.RPCTriggerPrimitives.primitiveRPCProducer_cfi import *
 
 process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32(10)
 process.maxEvents = cms.untracked.PSet(
-	input = cms.untracked.int32(30)
+	input = cms.untracked.int32(300)
 	)
 
 # Input source
@@ -92,7 +92,7 @@ process.generator = cms.EDFilter("Pythia8PtGun",
 		MaxEta = cms.double(1.6),
 		MaxPhi = cms.double(3.14159265359),
 		MaxPt = cms.double(100.01),
-		MinEta = cms.double(1.2),
+		MinEta = cms.double(0.5),
 		MinPhi = cms.double(-3.14159265359),
 		MinPt = cms.double(1.1),
 		ParticleID = cms.vint32(-13)

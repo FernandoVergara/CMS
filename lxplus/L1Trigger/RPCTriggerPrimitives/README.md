@@ -2,6 +2,7 @@
 
 This is the first version of the RPCTriggerPrimitives for the RPC detector. Which uses as a input the RPCDigis as an input and the RPCRecHits (New collection) as a output.
 The output of this module is an edm branch named RPCPrimitivesDigis, following the RPCRecHit format already committed in CMSSW_10_5_0_pre1.
+We apply the cluster size cut and emulate max two clusters per link board. The module can be tuned by the parameters LinkBoardCut and ClusterSizeCut. 
 
 #  Out of the box instructions
 
@@ -15,7 +16,7 @@ cmsenv
 ```
 
 ```
-You need to do a fork to cmssw-offline github repository:
+You need to do a fork from your githut repository to cmssw-offline repository. The url is:
 https://github.com/cms-sw/cmssw
 ```
 
@@ -33,9 +34,16 @@ scram b -j6
 ## Set your environment with my branch
 
 ```
+git remote add maseguracern git@github.com:maseguracern/cmssw.git
 git fetch maseguracern
-git cms-merge-topic -u maseguracern:maseguracern/PrimitiveTrigger
+git cms-merge-topic -u maseguracern:PrimitiveTrigger 
 scram b -j6
+```
+
+# Run test producer
+```
+cd test
+cmsRun rpcprimitive_MC.py
 ```
 
 ## Modifying files

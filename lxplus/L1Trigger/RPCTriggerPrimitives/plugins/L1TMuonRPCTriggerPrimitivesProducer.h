@@ -1,7 +1,6 @@
 #ifndef L1Trigger_RPCTriggerPrimitives_L1TMuonRPCTriggerPrimitivesProducer_h
 #define L1Trigger_RPCTriggerPrimitives_L1TMuonRPCTriggerPrimitivesProducer_h
 
-
 #include "FWCore/Framework/interface/Frameworkfwd.h"
 #include "FWCore/Framework/interface/stream/EDProducer.h"
 #include "FWCore/Framework/interface/Event.h"
@@ -15,9 +14,6 @@
 
 #include "DataFormats/RPCRecHit/interface/RPCRecHit.h"
 #include "DataFormats/RPCRecHit/interface/RPCRecHitCollection.h"
-
-#include "RecoLocalMuon/RPCRecHit/interface/RPCRecHitBaseAlgo.h"
-#include "RecoLocalMuon/RPCRecHit/interface/RPCRecHitAlgoFactory.h"
 
 #include "TVector3.h"
 
