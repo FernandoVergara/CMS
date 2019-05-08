@@ -34,3 +34,4 @@ void L1TMuonRPCTriggerPrimitivesProducer::endStream(){
 
 // Define this as a plug-in
 DEFINE_FWK_MODULE(L1TMuonRPCTriggerPrimitivesProducer);
+

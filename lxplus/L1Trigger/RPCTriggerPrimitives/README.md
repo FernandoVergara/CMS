@@ -35,7 +35,6 @@ scram b -j6
 
 ```
 git remote add maseguracern git@github.com:maseguracern/cmssw.git
-git fetch maseguracern
 git cms-merge-topic -u maseguracern:PrimitiveTrigger 
 scram b -j6
 ```
@@ -52,3 +51,4 @@ git add <Modified files>
 git commit -m "Commit message"
 git push my-cmssw YourBranchName
 ```
+

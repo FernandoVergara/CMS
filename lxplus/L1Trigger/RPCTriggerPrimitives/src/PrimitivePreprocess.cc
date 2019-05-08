@@ -4,8 +4,9 @@ PrimitivePreprocess::PrimitivePreprocess(const edm::ParameterSet& iConfig, edm::
   rpcToken_(iConsumes.consumes<RPCDigiCollection>(iConfig.getParameter<edm::InputTag>("Primitiverechitlabel"))),
   processorvector_(),
   Mapsource_(iConfig.getParameter<std::string>("Mapsource")),
-  LinkBoardCut_(iConfig.getParameter<std::vector<int>>("LinkBoardCut")),
-  ClusterSizeCut_(iConfig.getParameter<std::vector<int>>("ClusterSizeCut")),
+  ApplyLinkBoardCut_(iConfig.getParameter<bool>("ApplyLinkBoardCut")),
+  LinkBoardCut_(iConfig.getParameter<int>("LinkBoardCut")),
+  ClusterSizeCut_(iConfig.getParameter<int>("ClusterSizeCut")),
   theRPCMaskedStripsObj(nullptr),
   theRPCDeadStripsObj(nullptr),
   maskSource_(MaskSource::EventSetup), 
@@ -152,7 +153,8 @@ void PrimitivePreprocess::Preprocess(const edm::Event& iEvent, const edm::EventS
     iterator_.Process(iEvent, iSetup, rpcToken_, primitivedigi, 
 	theRPCMaskedStripsObj, theRPCDeadStripsObj, theAlgorithm, 
         LBName_ChamberID_Map_1, LBID_ChamberID_Map_1, LBName_ChamberID_Map_2, LBID_ChamberID_Map_2, 
-        LinkBoardCut_, ClusterSizeCut_);
+        ApplyLinkBoardCut_, LinkBoardCut_, ClusterSizeCut_);
   }
 }
+
 

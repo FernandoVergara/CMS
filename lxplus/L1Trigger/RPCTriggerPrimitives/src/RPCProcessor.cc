@@ -18,8 +18,10 @@ void RPCProcessor::Process(const edm::Event& iEvent,
 	                   std::map<std::string, std::string> LBID_ChamberID_Map_1, 
             		   std::map<std::string, std::string> LBName_ChamberID_Map_2, 
           		   std::map<std::string, std::string> LBID_ChamberID_Map_2,
-	                   std::vector<int>& LinkboardCut,
-	                   std::vector<int>& ClusterSizeCut ) const{
+                           bool ApplyLinkBoardCut_,             
+		           int LinkboardCut,
+               		   int ClusterSizeCut ) const{
+
   
   // Get the RPC Geometry
   edm::ESHandle<RPCGeometry> rpcGeom;
@@ -102,7 +104,9 @@ void RPCProcessor::Process(const edm::Event& iEvent,
       const int layer_ = rpcId_.layer();
       const int roll_eta_ = rpcId_.roll();
       
-      
+       //Apply linkboard cut   
+      if(ApplyLinkBoardCut_==true){
+  
       std::string StringBarrel="";
       std::string StringEndCap="";
       
@@ -165,9 +169,12 @@ void RPCProcessor::Process(const edm::Event& iEvent,
 	if(PassLinkCutEndCap) recHit_output.push_back(own); 
 	
       } 
-      
-    } //loop over temporal recHit vector
     
+    } else recHit_output = recHits;
+ 
+   } //loop over temporal recHit vector
+
+
     if (recHit_output.size() != 0){// Just to make sure
       // clustersize cut: 
       recHit_output=ApplyClusterSizeCut(recHit_output, ClusterSizeCut); 
@@ -179,16 +186,14 @@ void RPCProcessor::Process(const edm::Event& iEvent,
 
 
 
-edm::OwnVector<RPCRecHit> RPCProcessor::ApplyClusterSizeCut(const edm::OwnVector<RPCRecHit> recHits_, std::vector<int> ClusterSizeCut_){
+edm::OwnVector<RPCRecHit> RPCProcessor::ApplyClusterSizeCut(const edm::OwnVector<RPCRecHit> recHits_, int ClusterSizeCut_){
 
   edm::OwnVector<RPCRecHit> final_;
   
   for(auto &own : recHits_){
     bool passcut=true; 
-    for(std::vector<int>::iterator it = ClusterSizeCut_.begin(); it != ClusterSizeCut_.end(); it++ ){
-      if(own.clusterSize() > *it){
+      if(own.clusterSize() > ClusterSizeCut_){
 	passcut = false;
-      }  
     }
     if(passcut) final_.push_back(own);
   } 
@@ -196,13 +201,10 @@ edm::OwnVector<RPCRecHit> RPCProcessor::ApplyClusterSizeCut(const edm::OwnVector
   return final_;
 }
 
-bool RPCProcessor::ApplyLinkBoardCut(int NClusters, std::vector<int> LinkboardCut){
+bool RPCProcessor::ApplyLinkBoardCut(int NClusters, int LinkboardCut){
   
   bool passCutsize = true;
-  
-  for(std::vector<int>::iterator it = LinkboardCut.begin(); it != LinkboardCut.end(); it++ ){
-    if(NClusters > *it) passCutsize = false;
-  }
+  if(NClusters > LinkboardCut) passCutsize = false; 
   
   return passCutsize;
   
@@ -303,4 +305,5 @@ std::string RPCProcessor::GetStringEndCap(const int station_, const int ring_, c
   
   return point;
 }
+
 

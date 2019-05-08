@@ -37,3 +37,4 @@ class L1TMuonRPCTriggerPrimitivesProducer : public edm::stream::EDProducer<>{
 };
 
 #endif /* #define L1Trigger_RPCTriggerPrimitives_L1TMuonRPCTriggerPrimitivesProducer_h */
+

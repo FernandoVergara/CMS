@@ -51,8 +51,9 @@ class PrimitivePreprocess{
   std::array<RPCProcessor, 1> processorvector_;
  
   edm::FileInPath Mapsource_;
-  std::vector<int> LinkBoardCut_;
-  std::vector<int> ClusterSizeCut_;
+  bool ApplyLinkBoardCut_;
+  int LinkBoardCut_;
+  int ClusterSizeCut_;
 
   std::vector<RPCProcessor::Map_structure> Final_MapVector;
 
@@ -74,3 +75,4 @@ class PrimitivePreprocess{
   enum class MaskSource { File, EventSetup } maskSource_, deadSource_;
 };
 #endif
+

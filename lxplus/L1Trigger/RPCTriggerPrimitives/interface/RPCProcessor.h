@@ -64,11 +64,12 @@ class RPCProcessor{
                std::map<std::string, std::string> LBID_ChamberID_Map_1, 
                std::map<std::string, std::string> LBName_ChamberID_Map_2, 
 	       std::map<std::string, std::string> LBID_ChamberID_Map_2,
-	       std::vector<int>& LinkboardCut, 
-               std::vector<int>& ClusterSizeCut ) const;
+	       bool ApplyLinkBoardCut_, 
+	       int LinkboardCut, 
+               int ClusterSizeCut ) const;
 
-  static edm::OwnVector<RPCRecHit> ApplyClusterSizeCut(const edm::OwnVector<RPCRecHit> recHits_, std::vector<int> ClusterSizeCut_);
-  static bool ApplyLinkBoardCut(int NClusters, std::vector<int> LinkboardCut);
+  static edm::OwnVector<RPCRecHit> ApplyClusterSizeCut(const edm::OwnVector<RPCRecHit> recHits_, int ClusterSizeCut_);
+  static bool ApplyLinkBoardCut(int NClusters, int LinkboardCut);
 
   std::vector<Map_structure> const & GetMapVector() const {return MapVec;}
   std::vector<Map_structure> MapVec;
@@ -86,4 +87,5 @@ class RPCProcessor{
 
 };
 #endif
+
 
