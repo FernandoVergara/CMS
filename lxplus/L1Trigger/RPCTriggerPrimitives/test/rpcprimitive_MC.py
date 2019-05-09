@@ -5,7 +5,7 @@
 # with command line options: SingleMuPt10_pythia8_cfi.py -s GEN,SIM,DIGI --pileup=NoPileUp --geometry DB --conditions=auto:run1_mc --eventcontent FEVTDEBUGHLT --no_exec -n 30
 import FWCore.ParameterSet.Config as cms
 
-process = cms.Process('DIGI')
+process = cms.Process('PrimitiveDigisMC')
 
 # import of standard configurations
 process.load('Configuration.StandardSequences.Services_cff')
@@ -28,6 +28,10 @@ process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
 
 process.load('RecoLocalMuon.RPCRecHit.rpcRecHits_cfi')
 from RecoLocalMuon.RPCRecHit.rpcRecHits_cfi import *
+
+process.load('L1Trigger.L1TMuonCPPF.emulatorCppfDigis_cfi')
+from L1Trigger.L1TMuonCPPF.emulatorCppfDigis_cfi import *
+process.emulatorCppfDigis.recHitLabel = 'rpcRecHits'
 
 process.load('L1Trigger.RPCTriggerPrimitives.primitiveRPCProducer_cfi')
 from L1Trigger.RPCTriggerPrimitives.primitiveRPCProducer_cfi import *
@@ -69,11 +73,12 @@ process.FEVTDEBUGHLToutput = cms.OutputModule("PoolOutputModule",
 		filterName = cms.untracked.string('')
 		),
 					      eventAutoFlushCompressedSize = cms.untracked.int32(10485760),
-					      fileName = cms.untracked.string('MC.root'),
+					      fileName = cms.untracked.string('TriggerPrimitive_MC.root'),
 					      outputCommands = cms.untracked.vstring('drop *',
 										     "keep *_genParticles_*_*",
 										     'keep *_simMuonRPCDigis_*_*',	
 										     "keep *_rpcRecHits_*_*",
+										     "keep *_emulatorCppfDigis_*_*",
 										     'keep *_primitiveRPCProducer_*_*'),		
 					      #outputCommands = process.FEVTDEBUGHLTEventContent.outputCommands,
 					      splitLevel = cms.untracked.int32(0)
@@ -114,13 +119,14 @@ process.simulation_step = cms.Path(process.psim)
 process.digitisation_step = cms.Path(process.pdigi)
 process.primitivedigis_step = cms.Path(process.primitiveRPCProducer)
 process.rpcrechits_step = cms.Path(process.rpcRecHits)
+process.emulatorCppfDigis_step = cms.Path(process.emulatorCppfDigis)
 process.genfiltersummary_step = cms.EndPath(process.genFilterSummary)
 process.endjob_step = cms.EndPath(process.endOfProcess)
 process.FEVTDEBUGHLToutput_step = cms.EndPath(process.FEVTDEBUGHLToutput)
 
 
 # Schedule definition
-process.schedule = cms.Schedule(process.generation_step,process.genfiltersummary_step,process.simulation_step,process.digitisation_step,process.rpcrechits_step,process.primitivedigis_step,process.endjob_step,process.FEVTDEBUGHLToutput_step)
+process.schedule = cms.Schedule(process.generation_step,process.genfiltersummary_step,process.simulation_step,process.digitisation_step,process.rpcrechits_step,process.emulatorCppfDigis_step,process.primitivedigis_step,process.endjob_step,process.FEVTDEBUGHLToutput_step)
 from PhysicsTools.PatAlgos.tools.helpers import associatePatAlgosToolsTask
 associatePatAlgosToolsTask(process)
 # filter all path with the production filter sequence
