@@ -24,6 +24,7 @@ https://github.com/cms-sw/cmssw
 ```
 git cms-init
 git cms-addpkg L1Trigger/L1TMuonEndCap
+git cms-addpkg CondTools/RPC
 git remote add YourGitHubName git@github.com:YourGitHubName/cmssw.git
 git fetch YourGitHubName
 git checkout -b PrimitiveTrigger
