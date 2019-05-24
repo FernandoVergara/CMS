@@ -25,6 +25,14 @@ https://github.com/cms-sw/cmssw
 git cms-init
 git cms-addpkg L1Trigger/L1TMuonEndCap
 git cms-addpkg CondTools/RPC
+
+cd CondTools/RPC
+cp /eos/cms/store/group/dpg_rpc/comm_rpc/Run-II/cppf_payloads/RPCLinkMap.db data
+for analyser in test/RPC*LinkMapPopConAnalyzer_cfg.py; do 
+  cmsRun $analyser
+done; # <- this produces RPCLinkMap.db sqlite file yourself
+cd -
+
 git remote add YourGitHubName git@github.com:YourGitHubName/cmssw.git
 git fetch YourGitHubName
 git checkout -b PrimitiveTrigger

@@ -42,7 +42,6 @@ void RPCProcessor::Process(const edm::Event& iEvent,
   bool PassLinkCutEndCap=true;
   
   
-  
   for ( auto rpcdgIt = rpcdigis->begin(); rpcdgIt != rpcdigis->end(); ++rpcdgIt ) {
     
     // The layerId

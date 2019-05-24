@@ -14,3 +14,6 @@ primitiveRPCProducer = cms.EDProducer("L1TMuonRPCTriggerPrimitivesProducer",
 				recAlgo = cms.string('RPCRecHitStandardAlgo')	
 )
 
+from Configuration.Eras.Modifier_phase2_muon_cff import phase2_muon
+phase2_muon.toModify(primitiveRPCProducer, ApplyLinkBoardCut = cms.bool(False))
+phase2_muon.toModify(primitiveRPCProducer, ClusterSizeCut = cms.int32(4))

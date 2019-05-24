@@ -6,7 +6,7 @@
 L1TMuonRPCTriggerPrimitivesProducer::L1TMuonRPCTriggerPrimitivesProducer(const edm::ParameterSet& iConfig): 
   preprocess_pointer_(std::make_unique<PrimitivePreprocess>(iConfig, consumesCollector())){
 
-  produces<RPCRecHitCollection>("primitiveRPCProducer");
+  produces<RPCRecHitCollection>();
 
 }
 
@@ -22,7 +22,7 @@ void L1TMuonRPCTriggerPrimitivesProducer::produce(edm::Event& iEvent, const edm:
   preprocess_pointer_->beginRun(iSetup);  
   preprocess_pointer_->Preprocess(iEvent, iSetup, *Tprimitive_digis);
   // Fill the output collections
-  iEvent.put(std::move(Tprimitive_digis), "primitiveRPCProducer");
+  iEvent.put(std::move(Tprimitive_digis));
   
 }
 
