@@ -33,7 +33,7 @@ class L1TMuonRPCTriggerPrimitivesProducer : public edm::stream::EDProducer<>{
   void produce(edm::Event& event, const edm::EventSetup& setup) override;
   
   std::unique_ptr<PrimitivePreprocess> preprocess_pointer_; 
-
+  
 };
 
 #endif /* #define L1Trigger_RPCTriggerPrimitives_L1TMuonRPCTriggerPrimitivesProducer_h */

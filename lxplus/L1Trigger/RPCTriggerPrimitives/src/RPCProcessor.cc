@@ -1,7 +1,6 @@
 #include "L1Trigger/RPCTriggerPrimitives/interface/RPCProcessor.h"
 
-RPCProcessor::RPCProcessor():
-  digi_pointer(nullptr){
+RPCProcessor::RPCProcessor(){
 }
 
 RPCProcessor::~RPCProcessor(){
@@ -21,7 +20,7 @@ void RPCProcessor::Process(const edm::Event& iEvent,
                            bool ApplyLinkBoardCut_,             
 		           int LinkboardCut,
                		   int ClusterSizeCut ) const{
-
+  
   
   // Get the RPC Geometry
   edm::ESHandle<RPCGeometry> rpcGeom;
@@ -103,77 +102,77 @@ void RPCProcessor::Process(const edm::Event& iEvent,
       const int layer_ = rpcId_.layer();
       const int roll_eta_ = rpcId_.roll();
       
-       //Apply linkboard cut   
+      //Apply linkboard cut   
       if(ApplyLinkBoardCut_==true){
-  
-      std::string StringBarrel="";
-      std::string StringEndCap="";
-      
-      std::string LBNameEndCap="";
-      std::string LBNameBarrel="";
-      
-      /// Region id: 0 for Barrel, +/-1 For +/- Endcap
-      if(region_ == 0){
-	StringBarrel=GetStringBarrel(ring_, station_, sector_, layer_, subsector_, roll_eta_);
-	std::string namemap1 = LBName_ChamberID_Map_1[StringBarrel]; 
-	std::string namemap2 = LBName_ChamberID_Map_2[StringBarrel]; 
-	LBNameBarrel=namemap1+namemap2;
 	
-      } else{ 
-	//ChamberID only for EndCap region
-	int nsub = 6;
-	(ring_ == 1 && station_ > 1) ? nsub = 3 : nsub = 6;
-	const int chamberID = subsector_ + nsub * ( sector_ - 1);
+	std::string StringBarrel="";
+	std::string StringEndCap="";
 	
-	StringEndCap=GetStringEndCap(station_, ring_, chamberID);
-	//Getting linkboard name from map
-	LBNameEndCap=LBName_ChamberID_Map_1[StringEndCap];     
-      }
-      
-      
-      //maximum two cluster per linkboard     
-      if(region_==0){//For Barrel
+	std::string LBNameEndCap="";
+	std::string LBNameBarrel="";
 	
-	std::map<std::string, int>::iterator it;
-	it=FirstLinkBarrel.find(LBNameBarrel);
-	
-	int repetitions_Barrel=0;
-	if(it==FirstLinkBarrel.end()) {
-	  FirstLinkBarrel[LBNameBarrel]=1;
-	}
-	else if (it != FirstLinkBarrel.end()){
-	  repetitions_Barrel=FirstLinkBarrel[LBNameBarrel];
-	  FirstLinkBarrel[LBNameBarrel]=repetitions_Barrel+1;
+	/// Region id: 0 for Barrel, +/-1 For +/- Endcap
+	if(region_ == 0){
+	  StringBarrel=GetStringBarrel(ring_, station_, sector_, layer_, subsector_, roll_eta_);
+	  std::string namemap1 = LBName_ChamberID_Map_1[StringBarrel]; 
+	  std::string namemap2 = LBName_ChamberID_Map_2[StringBarrel]; 
+	  LBNameBarrel=namemap1+namemap2;
+	  
+	} else{ 
+	  //ChamberID only for EndCap region
+	  int nsub = 6;
+	  (ring_ == 1 && station_ > 1) ? nsub = 3 : nsub = 6;
+	  const int chamberID = subsector_ + nsub * ( sector_ - 1);
+	  
+	  StringEndCap=GetStringEndCap(station_, ring_, chamberID);
+	  //Getting linkboard name from map
+	  LBNameEndCap=LBName_ChamberID_Map_1[StringEndCap];     
 	}
 	
-	PassLinkCutBarrel=ApplyLinkBoardCut(FirstLinkBarrel[LBNameBarrel],LinkboardCut);
-	if(PassLinkCutBarrel) recHit_output.push_back(own);
 	
-      } 
+	//maximum two cluster per linkboard     
+	if(region_==0){//For Barrel
+	  
+	  std::map<std::string, int>::iterator it;
+	  it=FirstLinkBarrel.find(LBNameBarrel);
+	  
+	  int repetitions_Barrel=0;
+	  if(it==FirstLinkBarrel.end()) {
+	    FirstLinkBarrel[LBNameBarrel]=1;
+	  }
+	  else if (it != FirstLinkBarrel.end()){
+	    repetitions_Barrel=FirstLinkBarrel[LBNameBarrel];
+	    FirstLinkBarrel[LBNameBarrel]=repetitions_Barrel+1;
+	  }
+	  
+	  PassLinkCutBarrel=ApplyLinkBoardCut(FirstLinkBarrel[LBNameBarrel],LinkboardCut);
+	  if(PassLinkCutBarrel) recHit_output.push_back(own);
+	  
+	} 
+	
+	else{ //For endcap
+	  
+	  std::map<std::string, int>::iterator it; 
+	  it=FirstLinkEndCap.find(LBNameEndCap);
+	  
+	  int repetitions_EndCap=0;
+	  if(it==FirstLinkEndCap.end()) {
+	    FirstLinkEndCap[LBNameEndCap]=1;
+	  }
+	  else if (it != FirstLinkEndCap.end()){
+	    repetitions_EndCap=FirstLinkEndCap[LBNameEndCap];
+	    FirstLinkEndCap[LBNameEndCap]=repetitions_EndCap+1;
+	  }
+	  PassLinkCutEndCap=ApplyLinkBoardCut(FirstLinkEndCap[LBNameEndCap],LinkboardCut);
+	  if(PassLinkCutEndCap) recHit_output.push_back(own); 
+	  
+	} 
+	
+      } else recHit_output = recHits;
       
-      else{ //For endcap
-	
-	std::map<std::string, int>::iterator it; 
-	it=FirstLinkEndCap.find(LBNameEndCap);
-	
-	int repetitions_EndCap=0;
-	if(it==FirstLinkEndCap.end()) {
-	  FirstLinkEndCap[LBNameEndCap]=1;
-	}
-	else if (it != FirstLinkEndCap.end()){
-	  repetitions_EndCap=FirstLinkEndCap[LBNameEndCap];
-	  FirstLinkEndCap[LBNameEndCap]=repetitions_EndCap+1;
-	}
-	PassLinkCutEndCap=ApplyLinkBoardCut(FirstLinkEndCap[LBNameEndCap],LinkboardCut);
-	if(PassLinkCutEndCap) recHit_output.push_back(own); 
-	
-      } 
+    } //loop over temporal recHit vector
     
-    } else recHit_output = recHits;
- 
-   } //loop over temporal recHit vector
-
-
+    
     if (recHit_output.size() != 0){// Just to make sure
       // clustersize cut: 
       recHit_output=ApplyClusterSizeCut(recHit_output, ClusterSizeCut); 
@@ -186,13 +185,13 @@ void RPCProcessor::Process(const edm::Event& iEvent,
 
 
 edm::OwnVector<RPCRecHit> RPCProcessor::ApplyClusterSizeCut(const edm::OwnVector<RPCRecHit> recHits_, int ClusterSizeCut_){
-
+  
   edm::OwnVector<RPCRecHit> final_;
   
   for(auto &own : recHits_){
     bool passcut=true; 
-      if(own.clusterSize() > ClusterSizeCut_){
-	passcut = false;
+    if(own.clusterSize() > ClusterSizeCut_){
+      passcut = false;
     }
     if(passcut) final_.push_back(own);
   } 
