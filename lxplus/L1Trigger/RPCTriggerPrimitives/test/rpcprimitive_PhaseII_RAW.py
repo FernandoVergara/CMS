@@ -8,21 +8,14 @@ process.MessageLogger.cerr.FwkReport.reportEvery = 100
 
 # import of standard configurations
 process.load('Configuration.StandardSequences.Services_cff')
-#process.load('SimGeneral.HepPDTESSource.pythiapdt_cfi')
 process.load('FWCore.MessageService.MessageLogger_cfi')
 process.load('Configuration.EventContent.EventContent_cff')
 process.load('SimGeneral.MixingModule.mixNoPU_cfi')
-#process.load('Configuration.StandardSequences.GeometryRecoDB_cff')
-#process.load('Configuration.Geometry.GeometryDB_cff')
-#process.load('Configuration.StandardSequences.GeometryExtended_cff')
 process.load('Configuration.Geometry.GeometryExtended2023D38Reco_cff')
 process.load('Configuration.Geometry.GeometryExtended2023D38_cff')
 process.load('Configuration.StandardSequences.MagneticField_38T_cff')
 process.load('Configuration.StandardSequences.Generator_cff')
 process.load('IOMC.EventVertexGenerators.VtxSmearedRealistic50ns13TeVCollision_cfi')
-#process.load('GeneratorInterface.Core.genFilterSummary_cff')
-#process.load('Configuration.StandardSequences.SimIdeal_cff')
-#process.load('Configuration.StandardSequences.Digi_cff')
 process.load('Configuration.StandardSequences.EndOfProcess_cff')
 
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
@@ -65,7 +58,6 @@ process.source = cms.Source("PoolSource",
         fileNames = readFiles,
 )
 #in_dir_name = '/eos/cms/store/data/Run2018D/SingleMuon/RAW-RECO/ZMu-PromptReco-v2/000/321/457/00000/'
-in_dir_name ='/eos/cms/store/group/dpg_dt/comm_dt/TriggerSimulation/SamplesReco/SingleMu_FlatPt-2to100/Version_10_5_0/'
 
 readFiles.extend( cms.untracked.vstring('file:'+in_dir_name+'SimRECO_1.root') )
 

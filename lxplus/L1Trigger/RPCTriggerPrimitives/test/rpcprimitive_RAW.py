@@ -12,9 +12,6 @@ process.load('SimGeneral.HepPDTESSource.pythiapdt_cfi')
 process.load('FWCore.MessageService.MessageLogger_cfi')
 process.load('Configuration.EventContent.EventContent_cff')
 process.load('SimGeneral.MixingModule.mixNoPU_cfi')
-#process.load('Configuration.StandardSequences.GeometryRecoDB_cff')
-#process.load('Configuration.Geometry.GeometryDB_cff')
-#process.load('Configuration.StandardSequences.GeometryExtended_cff')
 process.load('Configuration.Geometry.GeometryExtended2016_cff')
 process.load('Configuration.Geometry.GeometryExtended2016Reco_cff')
 process.load('Configuration.StandardSequences.MagneticField_38T_cff')
@@ -98,7 +95,6 @@ process.out = cms.OutputModule("PoolOutputModule"
 									"keep *_emulatorCppfDigis_*_*",
 							                "keep *_primitiveRPCProducer_*_*",
                                                                         "keep *_rpcCPPFRawToDigi_*_*")
-                               #, fileName = cms.untracked.string(options.outputFile)
                                , fileName = cms.untracked.string("TriggerPrimitive_RAW.root")
                                , SelectEvents = cms.untracked.PSet(SelectEvents = cms.vstring("p"))
 )
