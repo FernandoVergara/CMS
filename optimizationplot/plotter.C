@@ -16,8 +16,8 @@ Double_t Max = 0.;
 
 
 
-Int_t Index = 8;
-Int_t IndexLabel = 2;
+Int_t Index = 6;
+Int_t IndexLabel = 0;
 
 std::map<int, int> colormap;
 
@@ -130,7 +130,7 @@ void plotter(){
  c1->SetFrameBorderMode(0);
 
  TGraph *gr = new TGraph(Npoints,X_,Y_);
- gr->GetXaxis()->SetTitle(Xlabel[0].c_str());
+ gr->GetXaxis()->SetTitle(Xlabel[1].c_str());
  gr->GetXaxis()->SetTitleSize(0.06);
  gr->GetXaxis()->SetTitleOffset(1.0);
  gr->GetXaxis()->SetLabelSize(0.05);
@@ -140,7 +140,7 @@ void plotter(){
  gr->GetYaxis()->SetLabelSize(0.05);
 
  gr->GetXaxis()->SetRangeUser(XMin-3,XMax+3);
- gr->GetYaxis()->SetRangeUser(Min/Max-0.3,1.+0.3);
+ gr->GetYaxis()->SetRangeUser(Min/Max-0.04,1.+0.03);
 
  gr->SetTitle("");
  gr->SetMarkerColor(colormap[IndexLabel]);
@@ -167,7 +167,7 @@ void plotter(){
  latex.SetTextSize(0.05);
  latex.SetTextFont(52);
  //latex.DrawLatex(54.1,1.+0.01,("#bf{S_{max}}="+Smax).c_str());
- latex.DrawLatex(140.,1.+0.1,("#bf{S_{max}}="+Smax).c_str());
+ latex.DrawLatex(140.,1.+0.005,("#bf{S_{max}}="+Smax).c_str());
 
  delete[] X_;
  delete[] Y_;
