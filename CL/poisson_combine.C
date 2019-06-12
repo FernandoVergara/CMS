@@ -8,6 +8,7 @@ TLine *line;
 // likelihood histos
 TH1F *CL_SB;
 TH1F *CL_ratio; 
+TH1F *CL_ratio2; 
 
 TH1F *cl_90; 
 TH1F *cl_95; 
@@ -16,17 +17,33 @@ TH1F *cl_99;
 TLegend *legend;
 
 Double_t CLb=0.;
+Double_t CLb2=0.;
+
 Double_t CLsb=0.;
+Double_t CLsb2=0.;
+
 Double_t CL=0.;
+Double_t CL2=0.;
+Double_t CL_combined=0.;
 
 Double_t maxCLsb=0.;
 Double_t maxCLratio=0.;
+Double_t maxCLratio2=0.;
+Double_t maxCLratioCB=0.;
+
+
 Double_t upper_limit_signal_CLsb = 0;  
 Double_t upper_limit_signal_CLratio = 0;
+Double_t upper_limit_signal_CLratioCB = 0;
 
-Double_t Bk = 10; 
-Double_t Signal = 20;
-unsigned data = 15;
+Double_t Bk = 4; 
+Double_t Signal = 11;
+unsigned data = 7;
+
+Double_t Bk1 = 7; 
+Double_t Signal1 = 12;
+unsigned data1 = 7;
+
 
 
 void SetFunction(unsigned nbins_, Double_t min_, Double_t max_){
@@ -63,6 +80,15 @@ void SetCLHistos(unsigned nbins_, Double_t min_, Double_t max_){
   CL_ratio->SetMarkerStyle(8);
   CL_ratio->SetMarkerSize(1);
   CL_ratio->SetMarkerColor(kRed);
+
+  
+  CL_ratio2 = new TH1F("CL_ratio2","CL_ratio2",nbins_,min_,max_);
+  CL_ratio2->GetXaxis()->SetTitle("Signal yield s");
+  CL_ratio2->GetYaxis()->SetTitle("Confidence Level");
+  CL_ratio2->SetMarkerStyle(8);
+  CL_ratio2->SetMarkerSize(1);
+  CL_ratio2->SetMarkerColor(kRed+2);
+  
 }
 
 void CreateCLlines(Double_t min_, Double_t max_){
@@ -79,34 +105,52 @@ void CalculateCL(unsigned nbins_, Double_t max_){
   
   
   CLb=Hnull->Integral(0,data);
+  Hnull->SetParameter( 0, Bk1);
+  CLb2=Hnull->Integral(0,data1);
+  
+  cout << CLb << " " << CLb2 << endl;
+
   double pvalue = Hnull->Integral(data, 100);
 
   for (unsigned entries=0; entries < nbins_; entries++){
     
     double new_signal = (max_)*entries/nbins_;
     
-    Halt->SetParameter(0, Bk+new_signal); //New signal point
-    
+    Halt->SetParameter(0, Bk+new_signal); //New signal point    
     CLsb=Halt->Integral(0,data);
     CL = 1-CLsb/CLb;
-    
+
+    Halt->SetParameter(0, Bk1+new_signal); //New signal point2    
+    CLsb2=Halt->Integral(0,data1);
+    CL2 = 1-CLsb2/CLb2;
+
+    CL_combined = CLsb/CLb*(CLsb2/CLb2);    
+
        cout<< "Signal: "<< new_signal << " CLsb: "<< CLsb << " CLratio " << CLsb/CLb  << " CL: "<< CL <<endl;
-    
-    if(CLsb < 0.05 && upper_limit_signal_CLsb == 0){
+       cout<< "Signal2: "<< new_signal << " CLsb2: "<< CLsb2 << " CLratio " << CLsb2/CLb2  << " CL2: "<< CL2 <<endl;
+        
+
+    if(CLsb/CLb < 0.05 && upper_limit_signal_CLsb == 0){
       upper_limit_signal_CLsb = new_signal;
-      maxCLsb = CLsb;  
+      maxCLsb = CLsb/CLb;  
       cout<< " CLsb signal: "<< new_signal <<endl;
     } 
     
-    if(CLsb/CLb < 0.05 && upper_limit_signal_CLratio == 0){
+    if(CLsb2/CLb2 < 0.05 && upper_limit_signal_CLratio == 0){
       upper_limit_signal_CLratio = new_signal;
-      maxCLratio = CLsb/CLb; 
+      maxCLratio = CLsb2/CLb2; 
       cout<< " CLratio signal: "<< new_signal <<endl;
     }
+    if(CL_combined < 0.05 && upper_limit_signal_CLratioCB == 0){
+      upper_limit_signal_CLratioCB = new_signal;
+      maxCLratioCB=CL_combined;
+      cout<< " CLcombined signal: "<< new_signal <<endl;
+    }    
+
     
-    
-    CL_SB->SetBinContent(entries, CLsb);
-    CL_ratio->SetBinContent(entries, CLsb/CLb);
+    CL_SB->SetBinContent(entries, CLsb/CLb);
+    CL_ratio->SetBinContent(entries, CLsb2/CLb2);
+    CL_ratio2->SetBinContent(entries, CL_combined);
   }
   cout << "pvalue: " << pvalue << endl;  
   
@@ -131,13 +175,17 @@ void PlotLineUpper(){
   line->DrawLine(upper_limit_signal_CLsb, maxCLsb, upper_limit_signal_CLsb, 0.0);
   line->SetLineColor(kRed);
   line->DrawLine(upper_limit_signal_CLratio, maxCLratio, upper_limit_signal_CLratio, 0.0);
+  line->SetLineColor(1);
+  line->DrawLine(upper_limit_signal_CLratioCB, maxCLratioCB, upper_limit_signal_CLratioCB, 0.0);
+
 }
 
 void PlotLegend(){
   
   legend = new TLegend(0.5893189,0.7439329,0.888595,0.8940455,NULL,"brNDC");
-  TLegendEntry *entry=legend->AddEntry(CL_SB,"CL_{s+b}","p");
-  TLegendEntry *entry1=legend->AddEntry(CL_ratio,"CL_{s+b}/CL_{b}","p");
+  TLegendEntry *entry=legend->AddEntry(CL_SB,"CL_{s+b} 1","p");
+  TLegendEntry *entry1=legend->AddEntry(CL_ratio,"CL_{s+b} 2","p");
+  TLegendEntry *entry2=legend->AddEntry(CL_ratio2,"CL_{s+b} combined","p");
   entry->SetTextFont(42);
   entry1->SetTextFont(42);
   legend->Draw();
@@ -161,15 +209,26 @@ void Plot(){
   
   c1->cd(1);
   Hdata->Draw("p");
+  Hnull->SetParameter( 0, Bk);
+  TF1 *Hnull_c = (TF1*)Hnull->Clone();
+  Hnull_c->Draw("same");
+  Hnull->SetParameter( 0, Bk1);
   Hnull->Draw("same");
-  Halt->SetParameter( 0, Bk+Signal);
+
+  Halt->SetParameter( 0, Bk+Signal);  
+  TF1 *Halt_c = (TF1*)Halt->Clone();
+  Halt_c->Draw("same");
+  Halt->SetParameter( 0, Bk1+Signal1);  
   Halt->Draw("same");
+
+
   PlotLatex(data, Bk, Signal);
   
   c1->cd(2);
   gPad->SetLogy(1);
   CL_SB->Draw("p");
   CL_ratio->Draw("p,same");
+  CL_ratio2->Draw("p,same");
   
   cl_90->Draw("Hdata,same");
   cl_95->Draw("Hdata,same");
@@ -183,7 +242,7 @@ void Plot(){
 
 
 
-void poisson(){
+void poisson_combine(){
   
   gStyle->SetOptStat(0);  
   c1 = new TCanvas("c1","Poisson Likelihood",100,200,900,600);
@@ -200,6 +259,8 @@ void poisson(){
   SetCLHistos(nbins, min, max);
   
   Hdata->Fill(data);
+  Hdata->Fill(data1);
+
   Hdata->Scale(0.3);
   
   CreateCLlines(min,max);
@@ -212,6 +273,6 @@ void poisson(){
 }
 
 int main(){
-  poisson();
+  poisson_combine();
   return 0;
 }
